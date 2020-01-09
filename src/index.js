@@ -1,12 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
+import { createStore, combineReducers, applyMiddleware } from 'redux'; // standalone redux store import
+import { Provider } from 'react-redux'; // connects redux to react
+import ReduxThunk from 'redux-thunk';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import newsReducer from './store/reducers/reducers';
+import collectionReducer from './store/reducers/collectionReducer';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+// Combining two reducers 
+// news: used by News Component
+// collections: used by Collection Component
+const rootReducer = combineReducers({
+    news: newsReducer,
+    collections: collectionReducer
+  });
+
+  // global store for app with ReduxThunk as middleware
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
+
+ReactDOM.render(<Provider store = {store}>
+    <App />
+</Provider>, document.getElementById('root'));
+
