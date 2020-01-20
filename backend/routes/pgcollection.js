@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { getNews, postNews, deleteNews, updateNews } = require('../controllers/pgcollection');
+<<<<<<< HEAD
 /**
  * @api {get} /pgcollection/v1/news/fetchNews Request News Information from Postgresql
  * @apiName getNews
@@ -76,6 +77,19 @@ router
  *       "success": "true"
  *     }
  */
+=======
+
+router
+    .route('/fetchNews')
+    .get(getNews);
+
+router
+    .route('/postNews')
+    .post(postNews);
+router
+    .route('/deleteNews')
+    .delete(deleteNews);
+>>>>>>> 5cf1018274f328947e1106f5c258345455262689
 router
     .route('/updateNews')
     .patch(updateNews);
