@@ -1,0 +1,192 @@
+[
+  {
+    "type": "get",
+    "url": "/country/:countryId/category/:categoryId/page/:pageno",
+    "title": "Request News Information from NewsApi",
+    "name": "getNews",
+    "group": "NewsApi",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "CountryId",
+            "description": "<p>Country unique ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "CategoryId",
+            "description": "<p>Category unique ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "PageNo",
+            "description": "<p>For Pagination Purpose</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "news",
+            "description": "<p>Array of objects of news article</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "backend/routes/newsapi.js",
+    "groupTitle": "NewsApi"
+  },
+  {
+    "type": "delete",
+    "url": "/pgcollection/v1/news/deleteNews",
+    "title": "Delete News Information from Postgresql",
+    "name": "deleteNews",
+    "group": "PgCollection",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "news",
+            "description": "<p>Array of objects of news article from PG</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": \"true\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n data: \n     { \n         id: articleurl URL of article to be deleted \n     }\n }",
+          "type": "Object"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "backend/routes/pgcollection.js",
+    "groupTitle": "PgCollection"
+  },
+  {
+    "type": "get",
+    "url": "/pgcollection/v1/news/fetchNews",
+    "title": "Request News Information from Postgresql",
+    "name": "getNews",
+    "group": "PgCollection",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "news",
+            "description": "<p>Array of objects of news article from PG</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "backend/routes/pgcollection.js",
+    "groupTitle": "PgCollection"
+  },
+  {
+    "type": "post",
+    "url": "/pgcollection/v1/news/postNews",
+    "title": "Post News Information to Postgresql",
+    "name": "postNews",
+    "group": "PgCollection",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "news",
+            "description": "<p>Array of objects of news article from PG</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": \"true\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "formValues: {\n      author: '',\n      title: '',\n      imageUrl: '',\n      description: '',\n      articleUrl: '',\n      sourceName: ''\n }",
+          "type": "Object"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "backend/routes/pgcollection.js",
+    "groupTitle": "PgCollection"
+  },
+  {
+    "type": "patch",
+    "url": "/pgcollection/v1/news/updateNews",
+    "title": "Update News Information to Postgresql",
+    "name": "updateNews",
+    "group": "PgCollection",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "news",
+            "description": "<p>Array of objects of news article from PG</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"success\": \"true\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ \n     data: { \n             formValues: getState().collections.formValues FormValues from State of Collections\n            } \n }",
+          "type": "Object"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "backend/routes/pgcollection.js",
+    "groupTitle": "PgCollection"
+  }
+]
