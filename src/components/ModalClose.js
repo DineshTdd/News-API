@@ -30,7 +30,6 @@ class ModalClose extends Component{
   }
   // Handles saving of an article in collection
   onSave = async () => {
-    console.log('Hi from onSave 1',this.props.isEditing)
     // creates new article to PG if in edit mode
     if (!this.props.isEditing) {
     await this.props.createNewsInPG(this.props.formValues);
@@ -43,7 +42,6 @@ class ModalClose extends Component{
     }
     await this.props.clearFormValues();
   } else if (this.props.isEditing) { // Updates news article in PG when in update mode
-    console.log('Hi from onSave 2',this.props.isEditing)
       await this.props.updateNewsArticle();
       await this.props.toggleIsValidated();
       if (this.props.status === 200) {

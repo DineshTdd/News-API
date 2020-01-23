@@ -11,6 +11,7 @@ const initialState = {
     },
     newsCollection: [],
     status: 200,
+    isLoading: false,
     isValidated: false,
     isEditing: false
 }
@@ -46,6 +47,12 @@ export default (state=initialState, action) => {
             return {
                 ...state,
                 isEditing: !state.isEditing
+            }
+        // isLoading is toggled whenever news articles are fetched
+        case collectionActions.TOGGLE_IS_LOADING:
+            return {
+                ...state,
+                isLoading: !state.isLoading
             }
         // set form values in store for editing
         case collectionActions.SET_FORM_VALUES:

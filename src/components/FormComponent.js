@@ -49,9 +49,9 @@ class FormComponent extends Component {
         this.props.updateStoreFormValues(this.state.formValues);
         }} />
     </Form.Field>
-    <Form.Field>
+    <Form.Field >
       <label>Article Url</label>
-      <input placeholder='Article Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.articleurl : ''} onChange={async (event) => {
+      <input disabled={(this.props.isEditing) ? true : false} placeholder='Article Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.articleurl : ''} onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, articleUrl: event.target.value}});
         this.props.updateStoreFormValues(this.state.formValues);
         }} />
@@ -71,7 +71,8 @@ class FormComponent extends Component {
 
 const mapStateToProps = state => {
     return {
-      formValues: state.collections.formValues
+      formValues: state.collections.formValues,
+      isEditing: state.collections.isEditing,
     };
   };
   
