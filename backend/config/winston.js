@@ -1,5 +1,6 @@
-var appRoot = require('app-root-path');
-var winston = require('winston');
+const appRoot = require('app-root-path');
+const winston = require('winston');
+const {RedisLogSave} = require('../logs/logtransporter/redislogsave');
 
 // define the custom settings for each transport (file, console)
 var options = {
@@ -20,13 +21,36 @@ var options = {
   },
 };
 
+
+let alignColorsAndTime = winston.format.combine(
+  winston.format.colorize({
+      all:true
+  }),
+  winston.format.label({
+      label:'[LOGGER]'
+  }),
+  winston.format.timestamp({
+      format:"YY-MM-DD HH:MM:SS"
+  }),
+  winston.format.printf(
+      info => {
+        const formattedMsg = `{ "label": "${info.label}"  "timestamp": "${info.timestamp}"  "level": "${info.level}" "message" : "${info.message}" }`
+        RedisLogSave(formattedMsg);
+        return formattedMsg;
+      }
+  )
+);
+
 // instantiate a new Winston Logger with the settings defined above
 var logger = new winston.createLogger({
   level: 'info',
   format: winston.format.json(),
   transports: [
     new winston.transports.File(options.file),
-    new winston.transports.Console(options.console)
+    // new winston.transports.Console(options.console)
+    new (winston.transports.Console)({
+      format: winston.format.combine(winston.format.colorize(), alignColorsAndTime)
+  })
   ],
   exitOnError: false, // do not exit on handled exceptions
 });
