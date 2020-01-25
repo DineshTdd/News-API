@@ -19,6 +19,7 @@
     "fs": "0.0.1-security",
     "morgan": "^1.9.1",
     "msgpack-lite": "^0.1.26",
+    "msgpack5": "^4.2.1",
     "object-sizeof": "^1.5.2",
     "path": "^0.12.7",
     "pg": "^7.17.0",

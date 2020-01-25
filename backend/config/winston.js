@@ -30,13 +30,14 @@ let alignColorsAndTime = winston.format.combine(
       label:'[LOGGER]'
   }),
   winston.format.timestamp({
-      format:"YY-MM-DD HH:MM:SS"
+      format:"YYYY-MM-DD HH:MM:SS"
   }),
   winston.format.printf(
       info => {
-        const formattedMsg = `{ "label": "${info.label}"  "timestamp": "${info.timestamp}"  "level": "${info.level}" "message" : "${info.message}" }`
+        const formattedinfo = `{ "label": "${info.label}" , "timestamp": "${info.timestamp}" , "level": "${info.level}" , "message" : "${info.message.replace(/"/g, "")}" }`
+        const formattedMsg = { "label": info.label , "timestamp": info.timestamp , "level": info.level , "message" : info.message }
         RedisLogSave(formattedMsg);
-        return formattedMsg;
+        return formattedinfo;
       }
   )
 );
