@@ -47,6 +47,9 @@ class App extends Component {
         <Menu.Item onClick={(event, data) => this.setState({isCollection: true})}>
           <p>My Collection</p>
         </Menu.Item>
+        <Menu.Item onClick={(event, data) => this.setState()}>
+          <p>Login</p>
+        </Menu.Item>
       </Container>
     </Menu>
     {(!this.state.isCollection) ? <News /> : <Collection />}

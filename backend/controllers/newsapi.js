@@ -12,7 +12,7 @@ exports.getNews = async (req, res, next) => {
         var categoryId = (req.params.categoryId) ? req.params.categoryId :'business';
         // business entertainment general health science sports technology
         var pageNo = (req.params.pageno) ? req.params.pageno : '1';
-        var news = await axios.get(`https://newsapi.org/v2/top-headlines?country=${countryId}&category=${categoryId}&pageSize=10&page=${pageNo}&apiKey=${process.env.apiKey}`)
+        var news = await axios.get(`https://newsapi.org/v2/top-headlines?country=${countryId}&category=${categoryId}&pageSize=10&page=${pageNo}&apiKey=${process.env.NEWSAPI_APIKEY}`)
         const totalResults = news.data.totalResults;
         var keyId = 0;
         news = news.data.articles.map( item => {

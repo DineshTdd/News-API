@@ -4,12 +4,17 @@ const cors = require('cors');
 //const fs = require('fs');
 const morgan = require('morgan');
 // const path = require('path');
-var winston = require('./config/winston');
+const winston = require('./config/winston');
+const authRoute = require('./routes/auth');
+const { mclient } = require('./config/mdbconfig');
+const verifyUser = require('./helpers/verifyToken');
+
 
 //load env vars
 dotenv.config({ path: './config/config.env' });
 
 const app = express();
+
 
 /* create a write stream ( in append mode)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, '/logs/access.log'), { flags: 'a' });
@@ -17,6 +22,7 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, '/logs/access.
 setup the logger for morgan
 app.use(morgan('combined', { stream: accessLogStream }))
 */
+
 
 // setup the logger for morgan and winston
 app.use(morgan('combined', { stream: winston.stream }));
@@ -27,11 +33,14 @@ app.use(express.json());
 //Enable cors 
 app.use(cors());
 
+// connect to mongodb
+mclient.mconnect();
 
 // Routes
 
-app.use('/api/v1/news', require('./routes/newsapi'));
+app.use('/api/v1/news', verifyUser ,require('./routes/newsapi'));
 app.use('/pgcollection/v1/news', require('./routes/pgcollection'));
+app.use('/api/user', authRoute);
 
 const PORT= process.env.PORT || 5000;
 
