@@ -1,4 +1,4 @@
-const {client} = require('../config/dbconfig');
+const {client} = require('../config/pgdbconfig');
 
 // @desc Get all news from collection in postgres
 // @route GET /pgcollection/v1/news/fetchNews
