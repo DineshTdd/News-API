@@ -39,7 +39,7 @@ mclient.mconnect();
 // Routes
 
 app.use('/api/v1/news', verifyUser ,require('./routes/newsapi'));
-app.use('/pgcollection/v1/news', require('./routes/pgcollection'));
+app.use('/pgcollection/v1/news', verifyUser, require('./routes/pgcollection'));
 app.use('/api/user', authRoute);
 
 const PORT= process.env.PORT || 5000;

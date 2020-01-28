@@ -12,7 +12,14 @@ export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const getNewsFromPG = () => {
     return async (dispatch, getState) => {
         try {
-            const response = await axios.get(`http://localhost:5000/pgcollection/v1/news/fetchNews`)
+            const { token } = getState().auth.userData;
+            const response = await axios.get(`http://localhost:5000/pgcollection/v1/news/fetchNews`,
+            {
+                headers: {
+                  'auth-token': token,
+                  'userid': localStorage.getItem('_id').toString()
+                }
+            })
             // Update store state with news items from PG
             await dispatch({
                 type: FETCH_COLLECTION_NEWS,
@@ -37,7 +44,13 @@ export const saveNewsToPG = (formValues, option) => {
                 await dispatch({type: CHANGE_STATUS, payload: {statuscode: 400}});
                 }
             } else {
-                await axios.post('http://localhost:5000/pgcollection/v1/news/postNews', formValues)
+                const { token } = getState().auth.userData;
+                await axios.post('http://localhost:5000/pgcollection/v1/news/postNews', formValues, {
+                    headers: {
+                      'auth-token': token,
+                      'userid': localStorage.getItem('_id').toString()
+                    }
+                })
                   .then(function (response) {
                     if(option !== 'news from api' ) {
                     dispatch({type: CHANGE_STATUS, payload: {statuscode: 200}})
@@ -66,7 +79,14 @@ export const saveNewsToPG = (formValues, option) => {
 export const deleteNewsFromPG = (articleurl) => {
     return async (dispatch, getState) => {
         try {
-            await axios.delete('http://localhost:5000/pgcollection/v1/news/deleteNews', { data: { id: articleurl } })
+            const { token } = getState().auth.userData;
+            await axios.delete('http://localhost:5000/pgcollection/v1/news/deleteNews', 
+            {
+                headers: {
+                  'auth-token': token,
+                  'userid': localStorage.getItem('_id').toString()
+                },
+             data: { id: articleurl } })
             .then(function (response) {
                 console.log(response);
               })
@@ -85,7 +105,14 @@ export const deleteNewsFromPG = (articleurl) => {
 export const updateNewsToPG = () => {
     return async (dispatch, getState) => {
         try {
-            await axios.patch('http://localhost:5000/pgcollection/v1/news/updateNews', { data: { formValues: getState().collections.formValues } })
+            const { token } = getState().auth.userData;
+            await axios.patch('http://localhost:5000/pgcollection/v1/news/updateNews',
+            {
+                data: { formValues: getState().collections.formValues },
+             }, {headers: {
+                'auth-token': token,
+                'userid': localStorage.getItem('_id').toString()
+              }})
             .then(function (response) {
                 dispatch({type: CHANGE_STATUS, payload: {statuscode: 200}})
                 console.log(response);

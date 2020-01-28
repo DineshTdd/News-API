@@ -11,7 +11,7 @@ exports.getNews = async (req, res, next) => {
                 data: result
             });
         };
-        await client.query('SELECT * FROM public.collection',async function (err, result) {
+        await client.query('SELECT * FROM public.collection where userid=$1',[req.header('userid')],async function (err, result) {
             if (err) {
                 throw new Error(err);
             }
@@ -29,9 +29,9 @@ exports.getNews = async (req, res, next) => {
 exports.postNews = async (req, res, next) => { 
     try {
         const formValues = req.body;
-        const queryString = 'INSERT INTO public.collection(title, source, imageurl, description, author, articleurl) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (articleurl) DO NOTHING';
+        const queryString = 'INSERT INTO public.collection(title, source, imageurl, description, author, articleurl, userid) VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT (articleurl) DO NOTHING';
         await client.query( queryString ,
-             [formValues.title, formValues.sourceName, formValues.imageUrl, formValues.description, formValues.author, formValues.articleUrl] 
+             [formValues.title, formValues.sourceName, formValues.imageUrl, formValues.description, formValues.author, formValues.articleUrl, req.header('userid')] 
              ,function (err, result) {
             if (err) {
                 console.log(err);
@@ -56,6 +56,7 @@ exports.deleteNews = async (req, res, next) => {
         const {id} = req.body;
         const queryString = 'DELETE FROM public.collection where articleurl=$1';
         await client.query( queryString, [id],function (err, result) {
+            console.log('Hi from delete!')
             if (err) {
                 throw new Error(err);
             }

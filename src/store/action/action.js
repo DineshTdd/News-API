@@ -12,8 +12,14 @@ export const fetchNews = () => {
         const activePage = getState().news.activePage.toString();
         const country = getState().news.country;
         const category = getState().news.category;
+        const { token } = getState().auth.userData;
         try {
-            const response = await axios.get(`http://localhost:5000/api/v1/news/country/${country}/category/${category}/page/${activePage}`)
+            const response = await axios.get(`http://localhost:5000/api/v1/news/country/${country}/category/${category}/page/${activePage}`,
+            {
+                headers: {
+                  'auth-token': token
+                }
+            });
             dispatch({
                 type: CHANGE_DATA,
                 payload: {value: response}

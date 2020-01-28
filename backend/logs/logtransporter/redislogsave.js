@@ -21,10 +21,10 @@ exports.RedisLogSave = async (message) => {
     obs.observe({ entryTypes: ['measure'] });
 
 
-    performance.mark('A')
+    // performance.mark('A')
     const buffer = Buffer.from(JSON.stringify(message), 'ascii'); 
-    performance.mark('B')
-    performance.measure('A to B', 'A', 'B') // It took 0.174399 ms.
+    // performance.mark('B')
+    // performance.measure('A to B', 'A', 'B') // It took 0.174399 ms.
     
     console.log(sizeof(buffer));
 

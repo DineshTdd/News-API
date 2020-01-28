@@ -11,8 +11,10 @@ router.post('/register', async (req, res) => {
         password: req.body.password
     };
 
-    const { error } = registerValidation(user);
+    console.log(user)
 
+    const { error } = registerValidation(user);
+    
     if (error) {
         return res.status(400).json({
             message: error.details[0].message

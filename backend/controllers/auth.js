@@ -14,6 +14,7 @@ exports.registerNewUser = async ( user, res ) => {
 
         await User.findOne({email: user.email}).then(result => {
             if(result) {
+                console.log('Hi')
                 return res.status(400).json({
                     message: 'Email already exists!'
                 });
@@ -55,7 +56,7 @@ exports.loginUser = async ( user, res ) => {
             res.header('auth-token', token).json({
                 _id: user._id,
                 token: token,
-                expiresIn: 3600,
+                expiresIn: '1h',
                 message: 'Login Successful!'
             });
 
