@@ -121,8 +121,31 @@ export const updateNewsToPG = () => {
                 dispatch({type: CHANGE_STATUS, payload: {statuscode: 400}})
                 console.log(error);
               });
-            await dispatch({type: TOGGLE_IS_EDITING})
+            await dispatch({type: TOGGLE_IS_EDITING, payload: {isEditing: false}})
             await dispatch(getNewsFromPG)
+        } catch(err) {
+            console.error(err);
+        }
+    };
+};
+
+export const updateArticleRatingToPG = (rating, articleUrl) => {
+    return async (dispatch, getState) => {
+        try {
+            const { token } = getState().auth.userData;
+            await axios.patch('http://localhost:5000/pgcollection/v1/news/updateArticleRating',
+            {
+                data: { rating: rating, articleUrl: articleUrl },
+             }, {headers: {
+                'auth-token': token,
+                'userid': localStorage.getItem('_id').toString()
+              }})
+            .then(function (response) {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
         } catch(err) {
             console.error(err);
         }

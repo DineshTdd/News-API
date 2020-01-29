@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ModalClose from './ModalClose';
 import {connect} from 'react-redux';
-import {Container, Card, Image, Button, Icon } from 'semantic-ui-react';
+import {Container, Card, Image, Button, Icon, Rating } from 'semantic-ui-react';
 import * as collectionActions from '../store/action/collectionAction';
 
 class Collection extends Component {
@@ -21,6 +21,13 @@ class Collection extends Component {
         e.preventDefault(); 
         await this.props.setFormValues(item);
     };
+
+    handleRate = async (e, ratingObject, articleUrl) => {
+        e.preventDefault();
+        const {rating: articleRating} = ratingObject;
+        await this.props.updateArticleRating(articleRating, articleUrl);
+        await this.props.fetchNewsFromPG();
+    }
 
     render() {
         const {news_data} = this.props;
@@ -44,13 +51,19 @@ class Collection extends Component {
                                     <Card.Meta textAlign="right">{item.author}</Card.Meta>
                                     <Card.Description>{item.description}</Card.Description>
                                 </Card.Content>
-                                <Card.Content textAlign="right" extra>
-                                    {item.source} <br />
+                                <Card.Content extra>
+                                    <div style={{padding: '10px'}}>
+                                    <Rating defaultRating={item.articlerating} style={{float: 'left'}} maxRating={5} onRate={(e,ratingObject) => {this.handleRate(e,ratingObject,item.articleurl)}} clearable/>
+                                    <p style={{float: 'right', marginTop: '1px'}}>{item.source}</p> 
+                                    </div>
+                                    <br />
+                                    <div style={{float: 'right'}}>
                                     <Button animated='horizontal' size='small' onClick={ (e) => this.handleDelete(e,item.articleurl)}><Button.Content hidden><Icon name='trash' /></Button.Content>
                                         <Button.Content visible>
                                             <Icon name='trash alternate outline' />
                                         </Button.Content></Button>
                                     <ModalClose title={'Update News Article'} news_item={item} size={'mini'} text={<Icon name='edit'/>} ></ModalClose>
+                                    </div>
                                 </Card.Content>
                             </Card>
                         ))
@@ -76,7 +89,8 @@ const mapDispatchToProps = dispatch => {
         toggleIsEditing: () => dispatch({type: collectionActions.TOGGLE_IS_EDITING}),
         setFormValues: (item) => dispatch({type: collectionActions.SET_FORM_VALUES, payload: {news_item: item}}),
         updateNewsArticle: () => dispatch(collectionActions.updateNewsToPG()),
-        clearFormValues: () => dispatch({type: collectionActions.CLEAR_FORM_VALUES})
+        clearFormValues: () => dispatch({type: collectionActions.CLEAR_FORM_VALUES}),
+        updateArticleRating: (rating, articleUrl) => dispatch(collectionActions.updateArticleRatingToPG(rating, articleUrl))
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Collection);

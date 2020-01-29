@@ -6,13 +6,15 @@ import { connect } from 'react-redux';
 
 import News from './components/News';
 import Collection from './components/Collection';
+import Profile from './components/Profile';
 import * as newsActions from './store/action/action';
 import * as authAction from './store/action/authAction';
 
 
 class App extends Component {
   state = {
-    isCollection: false
+    isCollection: false,
+    isProfile: false
   }
 
   componentDidMount() {
@@ -30,7 +32,7 @@ class App extends Component {
     <div>
     <Menu fluid stackable inverted>
       <Container>
-        <Menu.Item onClick={(event, data) => this.setState({isCollection: false})} header>
+        <Menu.Item onClick={(event, data) => this.setState({isCollection: false, isProfile: false})} header>
         <p>News_Api</p>
         </Menu.Item>
         <Dropdown
@@ -52,16 +54,19 @@ class App extends Component {
               } }
         />
         <Menu.Menu position='right'>
-          <Menu.Item onClick={(event, data) => this.setState({isCollection: true})}>
-            <p>My Collection</p>
+          <Menu.Item onClick={(event, data) => this.setState({isCollection: true, isProfile: false})}>
+            <p>Collection</p>
           </Menu.Item>
-          <Menu.Item onClick={(event, data) => this.setState()}>
+          <Menu.Item onClick={(event, data) => this.setState({isCollection: false, isProfile: true})}>
+            <p>Profile</p>
+          </Menu.Item>
+          <Menu.Item>
             <Button onClick={(e) => {this.logout(e)}} primary>Logout</Button>
           </Menu.Item>
         </Menu.Menu>
       </Container>
     </Menu>
-    {(!this.state.isCollection) ? <News /> : <Collection />}
+    {(this.state.isProfile) ? <Profile /> : (!this.state.isCollection) ? <News /> : <Collection />}
     </div>
   );
   }
