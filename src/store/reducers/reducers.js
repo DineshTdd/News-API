@@ -6,7 +6,8 @@ const initialState = {
     category: 'Business',
     totalPage: 10,
     activePage: 1,
-    data: []
+    data: [],
+    isNewsFetching: false
 };
 
 export default (state = initialState, action) => {
@@ -35,6 +36,11 @@ export default (state = initialState, action) => {
                 ...state,
                 totalPage: Math.ceil(action.payload.value.data.count/10),
                 data:action.payload.value.data.data
+            }
+        case newsActions.CHANGE_ISNEWSFETCHING:
+            return {
+                ...state,
+                isNewsFetching: action.payload.value
             }
         default: 
             return state;

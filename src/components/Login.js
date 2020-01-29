@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Form, Card, Button } from 'semantic-ui-react';
+import { Form, Card, Button, Dimmer, Loader } from 'semantic-ui-react';
 import Background from '../assets/collection-newspapers.jpg';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,7 +10,8 @@ class Login extends Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            isUserLoggingIn: false
         }
         this.change = this.change.bind(this);
     }
@@ -23,6 +24,10 @@ class Login extends Component {
 
     async handleSubmit(event) {
         event.preventDefault();
+        await this.setState({
+            ...this.state,
+            isUserLoggingIn: true
+        });
         if(this.state.email.trim().length === 0 || this.state.password.trim().length === 0 ) {
             alert('Please fill in the required fields and proceed!')
         } else {
@@ -33,6 +38,10 @@ class Login extends Component {
                 })
             await this.props.userLogin(userDetails); 
         }
+        await this.setState({
+            ...this.state,
+            isUserLoggingIn: false
+        });
     }
     
     render() {
@@ -84,45 +93,55 @@ class Login extends Component {
             shadowRadius: 10,
             borderRadius: 10,
         }
-        return (
-            <div  style={divStyle}>
 
-            <Card style={cardStyle}>
-                <Card.Content>
-                    <Card.Header>Login into News App</Card.Header>
-                </Card.Content>
-                <Card.Content>
-                    <Card.Description>
-                    
-                    <Form onSubmit={async (event) => {await this.handleSubmit(event)}}>
-                        <Form.Input
-                        value={this.state.email}
-                        fluid
-                        label='Email'
-                        placeholder='Email Address'
-                        id='email'
-                        name='email'
-                        onChange={async (event) => {await this.change(event)}}
-                        />
-                        <Form.Input
-                        value={this.state.password}
-                        fluid
-                        label='Password'
-                        type='password'
-                        id='password'
-                        placeholder='Password'
-                        name='password'
-                        onChange={async (event) => {await this.change(event)}}
-                        />
-                        <Button type="submit" style={{float: 'right'}}>Login</Button>
-                        <Link style={{padding: '10px',float: 'left'}} to="/Signup" >Click to Signup</Link>
-                    </Form>
-                    
-                    </Card.Description>
-                </Card.Content>
-            </Card>
-            </div>
-        )
+            
+                return (this.state.isUserLoggingIn) 
+                ? (
+                    <Dimmer active>
+                      <Loader size='massive' />
+                    </Dimmer>
+                )
+            
+                :  (<div  style={divStyle}>
+                
+                    <Card style={cardStyle}>
+                        <Card.Content>
+                            <Card.Header>Login into News App</Card.Header>
+                        </Card.Content>
+                        <Card.Content>
+                            <Card.Description>
+                            
+                            <Form onSubmit={async (event) => {await this.handleSubmit(event)}}>
+                                <Form.Input
+                                value={this.state.email}
+                                fluid
+                                label='Email'
+                                placeholder='Email Address'
+                                id='email'
+                                name='email'
+                                onChange={async (event) => {await this.change(event)}}
+                                />
+                                <Form.Input
+                                value={this.state.password}
+                                fluid
+                                label='Password'
+                                type='password'
+                                id='password'
+                                placeholder='Password'
+                                name='password'
+                                onChange={async (event) => {await this.change(event)}}
+                                />
+                                <Button type="submit" style={{float: 'right'}}>Login</Button>
+                                <Link style={{padding: '10px',float: 'left'}} to="/Signup" >Click to Signup</Link>
+                            </Form>
+                            
+                            </Card.Description>
+                        </Card.Content>
+                    </Card>        
+                </div>
+                )
+            
+
     }
 }
 

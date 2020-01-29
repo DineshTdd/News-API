@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Container, Card, Image, Pagination, Button, Icon } from 'semantic-ui-react';
+import {Container, Card, Image, Pagination, Button, Icon, Message } from 'semantic-ui-react';
 import {connect} from 'react-redux';
+import backgroundImage from '../assets/newspaper-pieces-vintage.jpg';
 
 import * as newsActions from '../store/action/action';
 import * as collectionActions from '../store/action/collectionAction';
@@ -40,7 +41,7 @@ class News extends Component {
     render () {
         const {news_data} = this.props;
         return (
-            <div>
+            <div style={{ backgroundImage: `url(${backgroundImage})`, height: 'auto' }} >
             <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                 <Pagination
                 inverted
@@ -52,7 +53,20 @@ class News extends Component {
                 totalPages={this.props.totalPage} />
             </div>
             <div style={{margin: '10px'}}>
-                <Container>
+                <Container >
+                    { (this.props.isNewsFetching)
+                    ? (
+                    <div style={{height: '100vh'}}>
+                        <Message icon color='black' >
+                        <Icon name='circle notched' loading />
+                        <Message.Content>
+                          <Message.Header>Just a moment!</Message.Header>
+                          We are fetching that content for you.
+                        </Message.Content>
+                      </Message>
+                    </div>
+                      )
+                    : (
                     <Card.Group>
                         {news_data.map((item)=> (
                             <Card href={ item.url } target="_blank" key={ item.key }centered raised>
@@ -77,6 +91,7 @@ class News extends Component {
                         ))
                         }
                     </Card.Group>
+                    ) }
                 </Container>
             </div>
             </div>
@@ -90,7 +105,8 @@ const mapStateToProps = state => {
       country: state.news.country,
       totalPage: state.news.totalPage,
       activePage: state.news.activePage,
-      news_data: state.news.data
+      news_data: state.news.data,
+      isNewsFetching: state.news.isNewsFetching
     };
   };
   

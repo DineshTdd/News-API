@@ -50,13 +50,13 @@ exports.loginUser = async ( user, res ) => {
             }
             const token = jwt.sign({email: user.email, _id: user._id}, 
                 process.env.JWT_KEY, {
-                expiresIn: '1h'
+                expiresIn: '24h'
             });
 
             res.header('auth-token', token).json({
                 _id: user._id,
                 token: token,
-                expiresIn: '1h',
+                expiresIn: '24h',
                 message: 'Login Successful!'
             });
 

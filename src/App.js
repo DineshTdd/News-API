@@ -4,6 +4,7 @@ import {categories} from './constants/categories';
 import {countries} from './constants/countries';
 import { connect } from 'react-redux';
 
+
 import News from './components/News';
 import Collection from './components/Collection';
 import Profile from './components/Profile';
@@ -29,7 +30,7 @@ class App extends Component {
   // Renders News and Collection component with common Menu
   render() {
   return (
-    <div>
+    <div >
     <Menu fluid stackable inverted>
       <Container>
         <Menu.Item onClick={(event, data) => this.setState({isCollection: false, isProfile: false})} header>
