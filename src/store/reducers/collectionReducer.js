@@ -26,9 +26,14 @@ export default (state=initialState, action) => {
             }
         // updates stores collection with fetched articles from PG
         case collectionActions.FETCH_COLLECTION_NEWS:
+            const {data: news} = action.payload.value.data;
+            news.sort(function(x, y){
+                return y.articlerating - x.articlerating;
+            })
+            // news.reverse();
             return {
                 ...state,
-                newsCollection: action.payload.value.data.data,
+                newsCollection: news,
             }
         // isValidated is toggled whenever article is created
         case collectionActions.TOGGLE_IS_VALIDATED:
@@ -46,7 +51,7 @@ export default (state=initialState, action) => {
         case collectionActions.TOGGLE_IS_EDITING:
             return {
                 ...state,
-                isEditing: !state.isEditing
+                isEditing: action.payload.isEditing
             }
         // isLoading is toggled whenever news articles are fetched
         case collectionActions.TOGGLE_IS_LOADING:

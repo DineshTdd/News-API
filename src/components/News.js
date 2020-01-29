@@ -34,6 +34,8 @@ class News extends Component {
         };
         this.props.addToCollection(news_item, 'news from api')
     };
+
+
     // Renders news item fetched from NEWSAPI
     render () {
         const {news_data} = this.props;
@@ -62,7 +64,7 @@ class News extends Component {
                                 </Card.Content>
                                 <Card.Content textAlign="right" extra>
                                     { item.sourceName } <br />
-                                    <Button 
+                                    <Button style={{float: 'right'}}
                                         onClick={ (e) => this.handleBookmark(e,item)} 
                                         animated='vertical'>
                                         <Button.Content hidden><Icon name='bookmark' /></Button.Content>

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getNews, postNews, deleteNews, updateNews } = require('../controllers/pgcollection');
+const { getNews, postNews, deleteNews, updateNews, updateArticleRating } = require('../controllers/pgcollection');
 /**
  * @api {get} /pgcollection/v1/news/fetchNews Request News Information from Postgresql
  * @apiName getNews
@@ -79,5 +79,9 @@ router
 router
     .route('/updateNews')
     .patch(updateNews);
+
+router
+    .route('/updateArticleRating')
+    .patch(updateArticleRating);
 
 module.exports = router;

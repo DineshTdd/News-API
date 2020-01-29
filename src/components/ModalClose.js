@@ -20,6 +20,7 @@ class ModalClose extends Component{
   }
   //Handles close of modal
   handleClose = () => {
+    this.props.toggleIsEditing(false)
     this.setState({ modalOpen: false });
     if (this.props.isValidated) {
       this.props.toggleIsValidated();
@@ -92,6 +93,7 @@ const mapDispatchToProps = dispatch => {
     createNewsInPG:(formValues) => dispatch(collectionActions.saveNewsToPG(formValues)),
     fetchNewsFromPG: () => dispatch(collectionActions.getNewsFromPG()),
     toggleIsValidated: () => dispatch({type: collectionActions.TOGGLE_IS_VALIDATED}),
+    toggleIsEditing: (value) => dispatch({type: collectionActions.TOGGLE_IS_EDITING, payload: {isEditing: value}}),
     changeStatusCode: (value) => dispatch({type: collectionActions.CHANGE_STATUS, payload: {statuscode: value}}),
     updateNewsArticle: () => dispatch(collectionActions.updateNewsToPG()),
     setFormValues: (item) => dispatch({type: collectionActions.SET_FORM_VALUES, payload: {news_item: item}}),
