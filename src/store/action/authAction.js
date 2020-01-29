@@ -15,7 +15,6 @@ export const userSignup = (userDetails) => {
                     dispatch(push('/'))
                   })
                   .catch(async function (error) {
-                    console.log();
                     await alert(`${error.response.data.message} try again`);
                     // browserHistory.push('/Signup')
                     dispatch(push('/Signup'))
@@ -38,7 +37,8 @@ export const userLogin = (userDetails) => {
                     await dispatch(setUser(_id, token));
                   })
                   .catch( function (error) {
-                    alert(`${error.response.data.message} try again`);
+                    console.log(error);
+                    // alert(`${error.response.data.message} try again`);
                     // browserHistory.push('/Signup')
                     dispatch(push('/Login'))
                   });

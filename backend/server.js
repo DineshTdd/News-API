@@ -6,6 +6,7 @@ const morgan = require('morgan');
 // const path = require('path');
 const winston = require('./config/winston');
 const authRoute = require('./routes/auth');
+const userRoute = require('./routes/user');
 const { mclient } = require('./config/mdbconfig');
 const verifyUser = require('./helpers/verifyToken');
 
@@ -37,10 +38,12 @@ app.use(cors());
 mclient.mconnect();
 
 // Routes
-
+app.use('/api/user', authRoute);
 app.use('/api/v1/news', verifyUser ,require('./routes/newsapi'));
 app.use('/pgcollection/v1/news', verifyUser, require('./routes/pgcollection'));
-app.use('/api/user', authRoute);
+app.use('/api/userdetails', verifyUser ,userRoute);
+
+
 
 const PORT= process.env.PORT || 5000;
 

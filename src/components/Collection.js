@@ -3,6 +3,7 @@ import ModalClose from './ModalClose';
 import {connect} from 'react-redux';
 import {Container, Card, Image, Button, Icon, Rating } from 'semantic-ui-react';
 import * as collectionActions from '../store/action/collectionAction';
+import backgroundImage from '../assets/torn-newspaper.jpg'
 
 class Collection extends Component {
     componentDidMount() {
@@ -32,7 +33,7 @@ class Collection extends Component {
     render() {
         const {news_data} = this.props;
         return (
-            <div>
+            <div style={{  backgroundImage: `url(${backgroundImage})`, width:'100%', height: '100%' }}>
             <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                 <ModalClose title={'Create News Article'} news_item={''} text={'Create Article'} />
             </div>
