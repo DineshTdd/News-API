@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Image } from 'semantic-ui-react';
+import {Card, Image, Icon } from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import * as userAction from '../store/action/userAction';
 
@@ -11,14 +11,22 @@ class UserProfile extends Component {
 
     render() {
         const { userData } = this.props;
-        const date = new Date(new Date(userData.userJoinedOn).getTime()).toGMTString()
+        let date = new Date(new Date(userData.userJoinedOn).getTime()).toGMTString();
+        date = date.toLocaleString().slice(0, -3); // removes GMT
         return (
             <Card>
-                <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
+                <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false}/>
                 <Card.Content>
-                <Card.Header>{userData.userName}</Card.Header>
+                <div>
+                <Card.Header style={{float: 'left'}}>{userData.userName}</Card.Header>
+                <Icon.Group style={{float: 'right'}} size='large'>
+                <Icon name="image" />
+                <Icon corner name='add' />
+                </Icon.Group>
+                </div>
+                <br />
                 <Card.Meta>
-                <span className='date'>Joined in {date.toLocaleString()}</span>
+                <span className='date'>Joined on {date}</span>
                 </Card.Meta>
                 <Card.Description>
                 {userData.userEmail}

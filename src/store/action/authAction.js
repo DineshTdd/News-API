@@ -32,7 +32,6 @@ export const userLogin = (userDetails) => {
         try {
             await axios.post('http://localhost:5000/api/user/login', userDetails)
                   .then(async function (response) {
-                    await alert('Login successful!')
                     const { _id, token } = response.data;
                     await dispatch(setUser(_id, token));
                   })

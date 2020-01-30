@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Form, Card, Button, Dimmer, Loader } from 'semantic-ui-react';
+import { Form, Card, Button, Dimmer, Loader, Icon } from 'semantic-ui-react';
 import Background from '../assets/collection-newspapers.jpg';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -131,7 +131,7 @@ class Login extends Component {
                                 name='password'
                                 onChange={async (event) => {await this.change(event)}}
                                 />
-                                <Button type="submit" style={{float: 'right'}}>Login</Button>
+                                <Button type="submit" style={{float: 'right'}}><Icon name="sign-in" />Login</Button>
                                 <Link style={{padding: '10px',float: 'left'}} to="/Signup" >Click to Signup</Link>
                             </Form>
                             

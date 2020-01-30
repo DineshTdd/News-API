@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Form, Card, Button } from 'semantic-ui-react';
+import { Form, Card, Button, Icon } from 'semantic-ui-react';
 import Background from '../assets/collection-newspapers.jpg';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -124,7 +124,7 @@ class Signup extends Component {
                         name='password'
                         onChange={(e) => this.change(e)}
                         />
-                        <Button type="submit" style={{float: 'right'}}>Signup</Button>
+                        <Button type="submit" style={{float: 'right'}}><Icon name="user outline"/>Signup</Button>
                         <Link style={{padding: '10px',float: 'left'}} to="/" >If existing user</Link>
                     </Form>
                     

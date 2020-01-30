@@ -13,7 +13,8 @@ const initialState = {
     status: 200,
     isLoading: false,
     isValidated: false,
-    isEditing: false
+    isEditing: false,
+    isCollectionFetching: false
 }
 
 export default (state=initialState, action) => {
@@ -87,6 +88,11 @@ export default (state=initialState, action) => {
                 },
                 isEditing: false
             }
+        case collectionActions.CHANGE_ISCOLLECTIONFETCHING:
+        return {
+            ...state,
+            isCollectionFetching: action.payload.value
+        }
         default:
             return state;
     }

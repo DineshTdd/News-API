@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Menu, Container, Dropdown, Button } from 'semantic-ui-react';
+import { Menu, Container, Dropdown, Button, Icon } from 'semantic-ui-react';
 import {categories} from './constants/categories';
 import {countries} from './constants/countries';
 import { connect } from 'react-redux';
@@ -34,8 +34,10 @@ class App extends Component {
     <Menu fluid stackable inverted>
       <Container>
         <Menu.Item onClick={(event, data) => this.setState({isCollection: false, isProfile: false})} header>
-        <p>News_Api</p>
+        <Icon size="big" name="newspaper outline"/><p>News_Api</p>
         </Menu.Item>
+        <Menu.Item>
+        <Icon size="small" name="filter"/>
         <Dropdown
               openOnFocus
               inline item placeholder='Category'
@@ -45,6 +47,9 @@ class App extends Component {
                 await this.props.changeData();
               }}
             />
+        </Menu.Item>
+        <Menu.Item>
+        <Icon size="small" name="flag" />
         <Dropdown
               openOnFocus
               inline item placeholder='Countries'
@@ -54,15 +59,16 @@ class App extends Component {
                 await this.props.changeData();
               } }
         />
+        </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item onClick={(event, data) => this.setState({isCollection: true, isProfile: false})}>
-            <p>Collection</p>
+          <Icon name="zip"/><p>Collection</p>
           </Menu.Item>
           <Menu.Item onClick={(event, data) => this.setState({isCollection: false, isProfile: true})}>
-            <p>Profile</p>
+          <Icon name="vcard"/><p>Profile</p>
           </Menu.Item>
           <Menu.Item>
-            <Button onClick={(e) => {this.logout(e)}} primary>Logout</Button>
+            <Button onClick={(e) => {this.logout(e)}} primary><Icon name="sign-out"/>Logout</Button>
           </Menu.Item>
         </Menu.Menu>
       </Container>
