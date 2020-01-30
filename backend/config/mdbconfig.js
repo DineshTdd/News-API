@@ -4,7 +4,7 @@ const mclient = {};
 mclient.mconnect = () => {
     const dbUrl = `mongodb+srv://${process.env.MONGOATLASDB_USER}:${process.env.MONGOATLASDB_PASSWORD}@news-api-mhad0.mongodb.net/${process.env.MONGOATLASDB_DBNAME}?retryWrites=true&w=majority`;
     mongoose.connect(dbUrl,
-    { useNewUrlParser: true, useUnifiedTopology: true })
+    { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => {
         console.log('Connection was established with MOngoAtlasDB!');
     })
