@@ -16,7 +16,6 @@ dotenv.config({ path: './config/config.env' });
 
 const app = express();
 
-
 /* create a write stream ( in append mode)
 const accessLogStream = fs.createWriteStream(path.join(__dirname, '/logs/access.log'), { flags: 'a' });
 
