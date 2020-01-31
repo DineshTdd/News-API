@@ -28,19 +28,28 @@ class UserProfile extends Component {
     async fileSelectedHandler(e) {
         e.preventDefault();  
         const {files} = e.target;
+        console.log(files[0])
+        if (!["image/png","image/gif","image/jpg","image/jpeg"].includes(files[0].type)) {
+            return alert('Please upload a valid image file!')
+        }
+        if(files[0].size > 5000000) {
+            return alert('Please upload a image file of size less than 1MB!')
+        }
         await this.fileLoader(files[0]);
         await this.setState({fileName: files[0].name})
         await this.props.setProfilePicture(files[0]);
+
     }
 
     render() {
         const { userData } = this.props;
         const {file} = this.state;
-        let date = new Date(new Date(userData.userJoinedOn).getTime()).toGMTString();
-        date = date.toLocaleString().slice(0, -3); // removes GMT
+        let date = new Date(new Date(userData.userJoinedOn).getTime() - new Date(userData.userJoinedOn).getTimezoneOffset()*60*1000);
+        date = date.toGMTString();
+        date = date.slice(0, -4); // removes GMT
         return (
             <Card>
-                <Image src={(file) ? this.state.file : userData.userProfilePicture} wrapped ui={false}/>
+                <Image src={(file) ? this.state.file : (userData.userProfilePicture) ? userData.userProfilePicture : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'  } wrapped ui={false}/>
                 <Card.Content>
                 <div>
                 <input 
@@ -58,7 +67,7 @@ class UserProfile extends Component {
                 </div>
                 <br /><br />
                 <Card.Meta>
-                <span className='date'>Joined on {date}</span>
+                <span className='date'>{(userData.userJoinedOn) ? `Joined on ${date}` : 'Loading...'}</span>
                 </Card.Meta>
                 <Card.Description>
                 {userData.userEmail}

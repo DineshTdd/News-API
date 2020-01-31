@@ -13,7 +13,9 @@ class News extends Component {
         country: '',
         totalPage: 10,
         activePage:1,
-        news_data: this.props.news_data
+        news_data: this.props.news_data,
+        isWelcomeMessageVisible: true,
+        isFirstVisit: this.props.isFirstVisit
       }
     
       // initial fetching of news from NEWSAPI and state is initialized
@@ -36,12 +38,30 @@ class News extends Component {
         this.props.addToCollection(news_item, 'news from api')
     };
 
+    handleDismiss = () => {
+      this.setState({ isWelcomeMessageVisible: undefined })
+      this.props.toggleIsFirstVisit(false)
+    }
 
     // Renders news item fetched from NEWSAPI
     render () {
         const {news_data} = this.props;
         return (
             <div style={{ backgroundImage: `url(${backgroundImage})`, height: 'auto' }} >
+              {
+                (this.state.isWelcomeMessageVisible && this.state.isFirstVisit) ? 
+                (
+                <Message 
+                  color='blue'
+                  icon='globe'
+                  style={{ width: '50%', marginLeft: '25%'}}
+                  onDismiss={this.handleDismiss}
+                  header='It is nice to have you here!'
+                  content='Surf through the global happenings!'
+                />
+              )
+              : null
+              }
             <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                 <Pagination
                 inverted
@@ -106,7 +126,8 @@ const mapStateToProps = state => {
       totalPage: state.news.totalPage,
       activePage: state.news.activePage,
       news_data: state.news.data,
-      isNewsFetching: state.news.isNewsFetching
+      isNewsFetching: state.news.isNewsFetching,
+      isFirstVisit: state.news.isFirstVisit
     };
   };
   
@@ -116,7 +137,8 @@ const mapStateToProps = state => {
       changeCountry: (value) => dispatch({type: newsActions.CHANGE_COUNTRY, payload: {value}}),
       changeActivePage: (value) => dispatch({type: newsActions.CHANGE_ACTIVE_PAGE, payload: {value}}),
       changeData: () => dispatch(newsActions.fetchNews()),
-      addToCollection: (news_item) => dispatch(collectionActions.saveNewsToPG(news_item))
+      addToCollection: (news_item) => dispatch(collectionActions.saveNewsToPG(news_item)),
+      toggleIsFirstVisit: (value) => dispatch({type: newsActions.TOGGLE_ISFIRSTVISIT, payload: {value} })
     };
   };
 

@@ -12,7 +12,7 @@ class Profile extends Component {
 
     render() {
         return (
-            <div style={{backgroundImage: `url(${backgroundImage})`, width: '100%', height: '100vh' }}>
+            <div style={{backgroundImage: `url(${backgroundImage})`, width: '100%', height: '100vh'}}>
             <Grid >
                 <Grid.Column width={4}>
                 <Menu size='huge'pointing secondary vertical>
@@ -30,9 +30,9 @@ class Profile extends Component {
                 </Grid.Column>
 
                 <Grid.Column stretched width={12}>
-                <Segment>
-                    {(this.state.activeItem === 'user') ? <UserProfile /> : <UserActivity />}
-                </Segment>
+                
+                    {(this.state.activeItem === 'user') ? <UserProfile /> : <Segment><UserActivity /></Segment>}
+                
                 </Grid.Column>
             </Grid>
             </div>

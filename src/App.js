@@ -22,9 +22,9 @@ class App extends Component {
     this.props.changeData();
   }
 
-  async logout(e) {
+  logout(e) {
     e.preventDefault();
-    await this.props.removeUserSession();
+    this.props.removeUserSession();
   }
 
   // Renders News and Collection component with common Menu

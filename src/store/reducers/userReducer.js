@@ -21,8 +21,11 @@ export default(state=initialState, action) => {
     switch(action.type) {
         case userAction.SET_USER_DATA:
             const { result } = action.payload.value.data;
-            const base64Flag = `data:${result.img.contentType};base64,`;
-            const img = base64Flag + arrayBufferToBase64(result.img.data.data);
+            let img = null;
+            if (result.img) {
+                const base64Flag = `data:${result.img.contentType};base64,`;
+                img = base64Flag + arrayBufferToBase64(result.img.data.data);
+            }
             return {
                 userData: {
                     userId: result._id,

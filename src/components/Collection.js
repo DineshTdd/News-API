@@ -33,12 +33,22 @@ class Collection extends Component {
     render() {
         const {news_data, isCollectionFetching} = this.props;
         return (
-        <div style={{  backgroundImage: `url(${backgroundImage})`, width:'100%', height: '100%' }}>
-            <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+        <div style={{  backgroundImage: `url(${backgroundImage})`, width:'100%', minHeight: '100em', height: '100%' }}>
+            {
+                (news_data.length === 0)
+                ? (
+                    <Message style={{ width: '50%', marginLeft: '25%'}} info>
+                        <Message.Header>Populate your collection!</Message.Header>
+                        <p>Try bookmarking news articles or create your own.</p>
+                    </Message>
+                )
+                : null
+            }
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center', height: '100%'}}>
                 <ModalClose title={'Create News Article'} news_item={''} text={'Create Article'} />
             </div>
             <div style={{margin: '10px'}}>
-                <Container>
+                <Container style={{height: '100%'}}>
                     { (isCollectionFetching) ?
                     (<div style={{height: '100vh'}}>
                         <Message icon color='black' >

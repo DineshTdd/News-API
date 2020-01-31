@@ -7,6 +7,7 @@ import newsReducer from './store/reducers/reducers';
 import collectionReducer from './store/reducers/collectionReducer';
 import authReducer from './store/reducers/authReducers';
 import userReducer from './store/reducers/userReducer';
+import logsReducer from './store/reducers/logsReducer';
 import { createStore, combineReducers, applyMiddleware } from 'redux'; // standalone redux store import
 import { Provider } from 'react-redux'; // connects redux to react
 import ReduxThunk from 'redux-thunk';
@@ -26,7 +27,8 @@ const rootReducer = (History) => combineReducers({
     news: newsReducer,
     collections: collectionReducer,
     auth: authReducer,
-    user: userReducer
+    user: userReducer,
+    logs: logsReducer
   });
 
   // global store for app with ReduxThunk as middleware

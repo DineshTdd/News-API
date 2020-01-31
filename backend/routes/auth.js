@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const { registerNewUser, loginUser } = require('../controllers/auth');
+const { registerNewUser, loginUser, logoutUser } = require('../controllers/auth');
 const { registerValidation, loginValidation } = require('../helpers/validation');
+
 
 
 router.post('/register', async (req, res) => {
@@ -11,7 +12,6 @@ router.post('/register', async (req, res) => {
         password: req.body.password
     };
 
-    console.log(user)
 
     const { error } = registerValidation(user);
     
@@ -37,6 +37,16 @@ router.post('/login', async (req,res) => {
         });
     }
     await loginUser(user, res);
+});
+
+router.post('/logout', async (req,res) => {
+
+    try {
+        const userId  = req.header('userid');
+        await logoutUser(req.body.logoutTime, userId, res);
+    } catch(err) {
+        console.error(err)
+    }
 });
 
 module.exports = router;

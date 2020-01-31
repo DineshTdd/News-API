@@ -7,7 +7,8 @@ const initialState = {
     totalPage: 10,
     activePage: 1,
     data: [],
-    isNewsFetching: false
+    isNewsFetching: false,
+    isFirstVisit: true
 };
 
 export default (state = initialState, action) => {
@@ -41,6 +42,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isNewsFetching: action.payload.value
+            }
+        case newsActions.TOGGLE_ISFIRSTVISIT:
+            return {
+                ...state,
+                isFirstVisit: action.payload.value
             }
         default: 
             return state;

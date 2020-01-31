@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const winston = require('./config/winston');
 const authRoute = require('./routes/auth');
 const userRoute = require('./routes/user');
+const logsRoute = require('./routes/logs');
 const { mclient } = require('./config/mdbconfig');
 const verifyUser = require('./helpers/verifyToken');
 
@@ -39,9 +40,11 @@ mclient.mconnect();
 
 // Routes
 app.use('/api/user', authRoute);
-app.use('/api/v1/news', verifyUser ,require('./routes/newsapi'));
+app.use('/api/user/logout', verifyUser, authRoute);
+app.use('/api/v1/news', verifyUser, require('./routes/newsapi'));
 app.use('/pgcollection/v1/news', verifyUser, require('./routes/pgcollection'));
 app.use('/api/userdetails', verifyUser ,userRoute);
+app.use('/logs', verifyUser, logsRoute);
 
 
 

@@ -160,3 +160,4 @@ export const updateArticleRatingToPG = (rating, articleUrl) => {
         }
     };
 };
+
