@@ -8,6 +8,7 @@ import * as authAction from '../store/action/authAction';
 class Login extends Component {
     constructor(props) {
         super(props);
+        this._isMounted = false;
         this.state = {
             email: '',
             password: '',
@@ -16,32 +17,34 @@ class Login extends Component {
         this.change = this.change.bind(this);
     }
 
-    async change(e) {
-        await this.setState({
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+     }
+
+    change(e) {
+        this._isMounted && this.setState({
             [e.target.name]: e.target.value
         })
     }
 
     async handleSubmit(event) {
         event.preventDefault();
-        await this.setState({
-            ...this.state,
-            isUserLoggingIn: true
-        });
+        await this.setState({isUserLoggingIn: true})
         if(this.state.email.trim().length === 0 || this.state.password.trim().length === 0 ) {
             alert('Please fill in the required fields and proceed!')
         } else {
             const userDetails = this.state;
-            await this.setState({
+            this.setState({
                 email: '',
                 password: ''
                 })
-            await this.props.userLogin(userDetails); 
+            await this.props.userLogin(userDetails);
+            this._isMounted && await this.setState({isUserLoggingIn: false})
         }
-        await this.setState({
-            ...this.state,
-            isUserLoggingIn: false
-        });
     }
     
     render() {
@@ -93,9 +96,9 @@ class Login extends Component {
             shadowRadius: 10,
             borderRadius: 10,
         }
-
+        const {isUserLoggingIn} = this.state;
             
-                return (this.state.isUserLoggingIn) 
+                return (isUserLoggingIn) 
                 ? (
                     <Dimmer active>
                       <Loader size='massive' />
@@ -144,6 +147,7 @@ class Login extends Component {
 
     }
 }
+
 
 const mapDispatchToProps = dispatch => {
     return {

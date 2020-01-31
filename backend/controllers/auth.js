@@ -1,20 +1,24 @@
 const User = require('../models/User');
+const Logs = require('../models/Logs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+
 
 exports.registerNewUser = async ( user, res ) => {
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(user.password, salt);
-        
+        const _id = mongoose.Types.ObjectId();
+
         const newUser = new User({
+            _id: _id,
             ...user,
             password: hashedPassword
         });
 
         await User.findOne({email: user.email}).then(result => {
             if(result) {
-                console.log('Hi')
                 return res.status(400).json({
                     message: 'Email already exists!'
                 });
@@ -39,6 +43,9 @@ exports.registerNewUser = async ( user, res ) => {
 };
 
 exports.loginUser = async ( user, res ) => {
+    const date = new Date();
+    // let newDate = new Date(date.getTime() - date.getTimezoneOffset()*60*1000);
+    // newDate = newDate.toGMTString();
     const { email, password } = user;
     await User.findOne({email: email}).then(async user => {
         if(user) {
@@ -52,20 +59,16 @@ exports.loginUser = async ( user, res ) => {
                 process.env.JWT_KEY, {
                 expiresIn: '24h'
             });
-
+           await User.findOneAndUpdate({email: email}, {lastLogin: date}, {
+                new: true // document returned after update
+            })
             res.header('auth-token', token).json({
                 _id: user._id,
                 token: token,
                 expiresIn: '24h',
                 message: 'Login Successful!'
             });
-
-            // return res.status(200).json({
-            //     _id: user._id,
-            //     token: token,
-            //     expiresIn: 3600,
-            //     message: 'Login Successful!'
-            // });
+            
 
         } else {
             return res.status(400).json({
@@ -74,4 +77,34 @@ exports.loginUser = async ( user, res ) => {
         }
       })
       .catch(err => res.status(400).send(err));
+};
+
+exports.logoutUser = async (logoutTime, userId, res) => {
+    try {
+        const _id = mongoose.Types.ObjectId();
+        const date = new Date(logoutTime)
+        let lastLogin;
+        await User.findById(userId).then(async user => {
+            if(user) {
+                lastLogin = await new Date(user.lastLogin);
+            }
+        }).catch(err => res.status(400).send(err))
+        const activeMinutes = Math.ceil(Math.abs(date - lastLogin) / (1000 * 60 )); // for days 1000 * 60 * 60 * 24
+        const newLog = new Logs({
+            _id: _id,
+            userId: userId,
+            content: `You were active on `,
+            usage: {
+                entryTime: lastLogin,
+                exitTime: date,
+                activeMinutes: activeMinutes
+            }
+        });
+        return newLog.save().then(createdPost => 
+            res.status(201).json({
+                message: `Log ${createdPost} added successfully`,
+        }));
+    } catch(err) {
+        return res.status(500).send(err);
+    }
 };

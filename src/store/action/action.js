@@ -1,4 +1,5 @@
 const axios = require('axios')
+const {fetchUserDetails} = require('./userAction');
 
 export const CHANGE_COUNTRY = 'CHANGE_COUNTRY';
 export const CHANGE_CATEGORY = 'CHANGE_CATEGORY';
@@ -6,6 +7,7 @@ export const CHANGE_TOTAL_PAGE = 'CHANGE_TOTAL_PAGE';
 export const CHANGE_ACTIVE_PAGE = 'CHANGE_ACTIVE_PAGE';
 export const CHANGE_DATA = 'CHANGE_DATA';
 export const CHANGE_ISNEWSFETCHING = 'CHANGE_ISNEWSFETCHING';
+export const TOGGLE_ISFIRSTVISIT = 'TOGGLE_ISFIRSTVISIT';
 
 // fetching news from NEWSAPI
 export const fetchNews = () => {
@@ -33,6 +35,7 @@ export const fetchNews = () => {
                 type: CHANGE_ISNEWSFETCHING,
                 payload: {value: false}
             })
+            await dispatch(fetchUserDetails());
         }
         catch (err) {
             console.error(err);

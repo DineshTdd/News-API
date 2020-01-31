@@ -66,6 +66,19 @@ export const setUser = (_id, token) => {
 export const removeUserSession = () => {
   return async (dispatch, getState) => {
     try {
+      const { token } = getState().auth.userData;
+      await axios.post('http://localhost:5000/api/user/logout', {logoutTime: Date.now()}, {
+        headers: {
+          'auth-token': token,
+          'userid': localStorage.getItem('_id').toString()
+        }
+    })
+      .then(async function (response) {
+        console.log(response)
+      })
+      .catch( function (error) {
+        console.log(error);
+      });
       await dispatch({
         type: REMOVE_USER_SESSION
       });

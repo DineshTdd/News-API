@@ -28,13 +28,15 @@ export const setProfilePicture = (file) => {
             const { _id, token } = getState().auth.userData;
             const formData = new FormData();
             formData.append('file', file);
+
             await axios.post('http://localhost:5000/api/userdetails/setProfilePicture', formData ,{
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'auth-token': token,
-                    'userid': _id.toString()
-                }
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'auth-token': token,
+                'userid': _id.toString()
+            }
             });
+            
             await dispatch(fetchUserDetails())
         } catch(err) {
             console.error({
