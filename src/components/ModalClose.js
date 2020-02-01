@@ -33,6 +33,11 @@ class ModalClose extends Component{
   onSave = async () => {
     // creates new article to PG if in edit mode
     if (!this.props.isEditing) {
+      if (this.props.isFormValid === false) {
+        await alert('Please enter valid field values!');
+        await this.props.changeIsFormValid(false);
+        return;
+      }
     await this.props.createNewsInPG(this.props.formValues);
     await this.props.toggleIsValidated();
     if (this.props.status === 200) {
@@ -41,18 +46,21 @@ class ModalClose extends Component{
     } else {
       this.setState({ messageOnSave: 'Fill in all the values and try again!'})
     }
-    await this.props.clearFormValues();
   } else if (this.props.isEditing) { // Updates news article in PG when in update mode
       await this.props.updateNewsArticle();
       await this.props.toggleIsValidated();
       if (this.props.status === 200) {
         this.setState({ messageOnSave: 'News article added to your collection!'})
-        this.props.fetchNewsFromPG();
+        const call = () => {
+          let self = this;
+          setTimeout(() => { self.props.fetchNewsFromPG(); }, 3000);
+        }
+        call();
       } else {
         this.setState({ messageOnSave: 'Fill in all the values and try again!'})
       }
-      await this.props.clearFormValues();
     }
+    await this.props.clearFormValues();
   };
   // @desc: renders a modal with form component 
   // @usage: for both edit and create article
@@ -85,6 +93,7 @@ const mapStateToProps = state => {
     status: state.collections.status,
     isValidated: state.collections.isValidated,
     isEditing: state.collections.isEditing,
+    isFormValid: state.collections.isFormValid
   }
 };
 
@@ -97,7 +106,8 @@ const mapDispatchToProps = dispatch => {
     changeStatusCode: (value) => dispatch({type: collectionActions.CHANGE_STATUS, payload: {statuscode: value}}),
     updateNewsArticle: () => dispatch(collectionActions.updateNewsToPG()),
     setFormValues: (item) => dispatch({type: collectionActions.SET_FORM_VALUES, payload: {news_item: item}}),
-    clearFormValues: () => dispatch({type: collectionActions.CLEAR_FORM_VALUES})
+    clearFormValues: () => dispatch({type: collectionActions.CLEAR_FORM_VALUES}),
+    changeIsFormValid: (value) => dispatch({type: collectionActions.CHANGE_ISFORMVALID, payload: {value}})
   };
 };
 

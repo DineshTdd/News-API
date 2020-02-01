@@ -53,7 +53,7 @@ class News extends Component {
                 (
                 <Message 
                   color='blue'
-                  icon='globe'
+                  icon='smile'
                   style={{ width: '50%', marginLeft: '25%'}}
                   onDismiss={this.handleDismiss}
                   header='It is nice to have you here!'
@@ -90,7 +90,7 @@ class News extends Component {
                     <Card.Group>
                         {news_data.map((item)=> (
                             <Card href={ item.url } target="_blank" key={ item.key }centered raised>
-                                <Image bordered src={ item.urlToImage } />
+                                <Image bordered src={ (item.urlToImage) ? item.urlToImage : 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.ytimg.com%2Fvi%2FvzchjdTNWa0%2Fmaxresdefault.jpg&f=1&nofb=1' }  />
                                 <Card.Content>
                                     <Card.Header>{ item.title }</Card.Header>
                                     <Card.Meta textAlign="right">{item.author}</Card.Meta>

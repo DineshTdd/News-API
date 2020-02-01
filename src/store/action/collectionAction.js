@@ -9,6 +9,7 @@ export const SET_FORM_VALUES = 'SET_FORM_VALUES';
 export const CLEAR_FORM_VALUES = 'CLEAR_FORM_VALUES';
 export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const CHANGE_ISCOLLECTIONFETCHING = 'CHANGE_ISCOLLECTIONFETCHING';
+export const CHANGE_ISFORMVALID = 'CHANGE_ISFORMVALID';
 //Fetching news from postgres collection
 export const getNewsFromPG = () => {
     return async (dispatch, getState) => {
@@ -21,18 +22,10 @@ export const getNewsFromPG = () => {
                   'userid': localStorage.getItem('_id').toString()
                 }
             })
-            await dispatch({
-                type: CHANGE_ISCOLLECTIONFETCHING,
-                payload: {value: true}
-            });
             // Update store state with news items from PG
             await dispatch({
                 type: FETCH_COLLECTION_NEWS,
                 payload: {value: response}
-            });
-            await dispatch({
-                type: CHANGE_ISCOLLECTIONFETCHING,
-                payload: {value: false}
             });
         }
         catch (err) {
@@ -123,15 +116,15 @@ export const updateNewsToPG = () => {
                 'userid': localStorage.getItem('_id').toString()
               }})
             .then(function (response) {
+                dispatch(getNewsFromPG)
                 dispatch({type: CHANGE_STATUS, payload: {statuscode: 200}})
-                console.log(response);
               })
               .catch(function (error) {
                 dispatch({type: CHANGE_STATUS, payload: {statuscode: 400}})
                 console.log(error);
               });
             await dispatch({type: TOGGLE_IS_EDITING, payload: {isEditing: false}})
-            await dispatch(getNewsFromPG)
+            
         } catch(err) {
             console.error(err);
         }

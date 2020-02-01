@@ -15,6 +15,23 @@ class FormComponent extends Component {
             sourceName: this.props.formValues.sourceName
         }
     }
+    checkImage(src) {
+      var img = new Image();
+      img.src = src.target.value;
+      img.onload = function() {
+        return;
+      };
+      img.onerror = function() {
+        alert('Please enter a valid image URL')
+      };
+    }
+    
+    async isValidURL(string) {
+      var res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g);
+      if (res !== null) {this.props.changeIsFormValid(true); return;}
+      await this.props.changeIsFormValid(false);
+      await alert('Please enter a valid URL')
+    };
   // @desc: Form is rendered within a modal
   // @usage: for both creating and editing article in collection
   render() {
@@ -37,7 +54,9 @@ class FormComponent extends Component {
     </Form.Field>
     <Form.Field>
       <label>Image Url</label>
-      <input placeholder='Image Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.imageurl : ''} onChange={async (event) => {
+      <input placeholder='Image Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.imageurl : ''} 
+      onBlur={(e) => this.checkImage(e)}
+      onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, imageUrl: event.target.value}});
         this.props.updateStoreFormValues(this.state.formValues);
         }} />
@@ -51,7 +70,9 @@ class FormComponent extends Component {
     </Form.Field>
     <Form.Field >
       <label>Article Url</label>
-      <input disabled={(this.props.isEditing) ? true : false} placeholder='Article Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.articleurl : ''} onChange={async (event) => {
+      <input disabled={(this.props.isEditing) ? true : false} placeholder='Article Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.articleurl : ''} 
+      onBlur={(e) => this.isValidURL(e.target.value)}
+      onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, articleUrl: event.target.value}});
         this.props.updateStoreFormValues(this.state.formValues);
         }} />
@@ -73,12 +94,14 @@ const mapStateToProps = state => {
     return {
       formValues: state.collections.formValues,
       isEditing: state.collections.isEditing,
+      isFormValid: state.collections.isFormValid
     };
   };
   
 const mapDispatchToProps = dispatch => {
     return {
          updateStoreFormValues:(formValues) => dispatch({type: collectionActions.UPDATE_FORM_VALUES, payload: {formValues}}),
+         changeIsFormValid: (value) => dispatch({type: collectionActions.CHANGE_ISFORMVALID, payload: {value}})
     };
   };
   

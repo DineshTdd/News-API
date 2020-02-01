@@ -37,9 +37,9 @@ export const userLogin = (userDetails) => {
                   })
                   .catch( function (error) {
                     console.log(error);
-                    // alert(`${error.response.data.message} try again`);
+                    alert(`${error.response.data.message} try again`);
                     // browserHistory.push('/Signup')
-                    dispatch(push('/Login'))
+                    dispatch(push('/'))
                   });
         } catch(err) {
             console.error(err);

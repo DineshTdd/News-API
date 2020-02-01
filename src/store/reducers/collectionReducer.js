@@ -14,7 +14,8 @@ const initialState = {
     isLoading: false,
     isValidated: false,
     isEditing: false,
-    isCollectionFetching: false
+    isCollectionFetching: false,
+    isFormValid: false
 }
 
 export default (state=initialState, action) => {
@@ -86,13 +87,18 @@ export default (state=initialState, action) => {
                     articleUrl: '',
                     sourceName: ''
                 },
-                isEditing: false
+                isEditing: false,
             }
         case collectionActions.CHANGE_ISCOLLECTIONFETCHING:
-        return {
-            ...state,
-            isCollectionFetching: action.payload.value
-        }
+            return {
+                ...state,
+                isCollectionFetching: action.payload.value
+            }
+            case collectionActions.CHANGE_ISFORMVALID:
+                return {
+                    ...state,
+                    isFormValid: action.payload.value
+                }
         default:
             return state;
     }
