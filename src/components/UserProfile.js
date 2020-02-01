@@ -58,7 +58,7 @@ class UserProfile extends Component {
                     type="file" 
                     onChange={(e) => this.fileSelectedHandler(e)}
                     ref={fileInput => this.fileInput = fileInput} />
-                <Card.Header style={{float: 'left', padding: '5px', fontWeight: 'bold'}}>{userData.userName}</Card.Header>
+                <Card.Header style={{float: 'left', fontWeight: 'bold'}}><Icon name='user' size='small' />{userData.userName}</Card.Header>
                 <Button style={{fontSize: '10px', float: 'right'}} onClick={() => {this.fileInput.click()}}>
                 <Icon.Group size='large'>
                 <Icon name="image" />
@@ -67,9 +67,11 @@ class UserProfile extends Component {
                 </div>
                 <br /><br />
                 <Card.Meta>
+                <Icon name='like' size='small' />
                 <span className='date'>{(userData.userJoinedOn) ? `Joined on ${date}` : 'Loading...'}</span>
                 </Card.Meta>
                 <Card.Description>
+                <Icon name='mail' size='small' />
                 {userData.userEmail}
                 </Card.Description>
                 </Card.Content>

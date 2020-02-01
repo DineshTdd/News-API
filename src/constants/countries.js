@@ -1,97 +1,116 @@
 export const countries = [
     {
           key: 1,
-          text: "Argentina",
+          text: `Argentina`,
+          flag: 'ar',
           value: "ar"
     },
     {
           key: 2,
           text: "Australia",
-          value: "au"
+          value: "au",
+          flag: "au"
     },
     {
           key: 3,
           text: "Brazil",
-          value: "br"
+          value: "br",
+          flag: 'br'
     },
     {
           key: 4,
           text: "Canada",
-          value: "ca"
+          value: "ca",
+          flag: 'ca'
     },
     {
           key: 5,
           text: "China",
-          value: "ch"
+          value: "ch",
+          flag: 'ch'
     },
     {
           key: 6,
           text: "France",
-          value: "fr"
+          value: "fr",
+          flag: 'fr'
     },
     {
           key: 7,
           text: "Germany",
-          value: "de"
+          value: "de",
+          flag: 'de'
     },
     {
           key: 8,
           text: "Hong Kong",
-          value: "hk"
+          value: "hk",
+          flag: 'hk'
     },
     {
           key: 9,
           text: "India",
-          value: "in"
+          value: "in",
+          flag: 'in'
     },
     {
           key: 12,
           text: "Italy",
-          value: "it"
+          value: "it",
+          flag: 'it'
     },
     {
           key: 13,
           text: "Netherlands",
-          value: "nl"
+          value: "nl",
+          flag: 'nl'
     },
     {
           key: 14,
           text: "Norway",
-          value: "no"
+          value: "no",
+          flag: 'no'
     },
     {
           key: 15,
           text: "Philippines",
-          value: "ph"
+          value: "ph",
+          flag: 'ph'
     },
     {
           key: 16,
           text: "Russia",
-          value: "ru"
+          value: "ru",
+          flag: 'ru'
     },
     {
           key: 17,
           text: "Saudi Arabia",
-          value: "sa"
+          value: "sa",
+          flag: 'sa'
     },
     {
           key: 18,
           text: "South Africa",
-          value: "za"
+          value: "za",
+          flag: 'za'
     },
     {
           key: 20,
           text: "Sweden",
-          value: "se"
+          value: "se",
+          flag: 'se'
     },
     {
           key: 21,
           text: "United Kingdom",
-          value: "gb"
+          value: "gb",
+          flag: 'gb'
     },
     {
           key: 22,
           text: "United States",
-          value: "us"
+          value: "us",
+          flag: 'us'
     },
 ]

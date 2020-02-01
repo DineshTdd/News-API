@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as logsAction from '../store/action/logsAction';
-import {Message, Feed, Dimmer, Loader } from 'semantic-ui-react';
+import {Message, Feed, Dimmer, Loader, Icon } from 'semantic-ui-react';
 
 class UserActivity extends Component {
     constructor(props) {
@@ -63,7 +63,7 @@ class UserActivity extends Component {
                                     </Feed.Label>
                                     <Feed.Content>
                                         <Feed.Summary>
-                                            <Feed.User>Usage Activity: </Feed.User> {item.content} {item.usage.entryTime}
+                                            <Feed.User>Usage Activity: </Feed.User> <Icon name='history' size='small' /> {item.content} {item.usage.entryTime}
                                             <Feed.Date>used for {item.usage.activeMinutes} minutes</Feed.Date>
                                         </Feed.Summary>
                                     </Feed.Content>

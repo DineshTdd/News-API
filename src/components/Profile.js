@@ -17,11 +17,13 @@ class Profile extends Component {
                 <Grid.Column width={4}>
                 <Menu size='huge'pointing secondary vertical>
                     <Menu.Item
+                    icon='id badge outline'
                     name='user'
                     active={this.state.activeItem === 'user'}
                     onClick={this.handleItemClick}
                     />
                     <Menu.Item
+                    icon='calendar alternate outline'
                     name='activities'
                     active={this.state.activeItem === 'activities'}
                     onClick={this.handleItemClick}

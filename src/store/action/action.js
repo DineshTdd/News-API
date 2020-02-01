@@ -13,8 +13,8 @@ export const TOGGLE_ISFIRSTVISIT = 'TOGGLE_ISFIRSTVISIT';
 export const fetchNews = () => {
     return async (dispatch, getState) =>  {
         const activePage = getState().news.activePage.toString();
-        const country = getState().news.country;
-        const category = getState().news.category;
+        const country = getState().news.country || 'in';
+        const category = getState().news.category || 'Business';
         const { token } = getState().auth.userData;
         try {
             await dispatch({

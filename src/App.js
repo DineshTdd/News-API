@@ -15,7 +15,8 @@ import * as authAction from './store/action/authAction';
 class App extends Component {
   state = {
     isCollection: false,
-    isProfile: false
+    isProfile: false,
+    activeItem: 'header'
   }
 
   componentDidMount() {
@@ -26,21 +27,32 @@ class App extends Component {
     e.preventDefault();
     this.props.removeUserSession();
   }
+  
 
   // Renders News and Collection component with common Menu
   render() {
+  const { activeItem, isCollection, isProfile } = this.state
   return (
-    <div >
-    <Menu fluid stackable inverted>
+    <div>
+    <Menu pointing fluid stackable inverted>
       <Container>
-        <Menu.Item onClick={(event, data) => this.setState({isCollection: false, isProfile: false})} header>
-        <Icon size="big" name="newspaper outline"/><p>News_Api</p>
+        <Menu.Item 
+          name='header'
+          active={activeItem === 'header'}
+          onClick={(event, {name}) => this.setState({isCollection: false, isProfile: false, activeItem: name})} 
+          header>
+          <Button size="massive"inverted animated='fade'>
+            <Button.Content visible><p>News_Api</p></Button.Content>
+            <Button.Content hidden><Icon size="big" name="newspaper outline"/></Button.Content>
+          </Button>
         </Menu.Item>
+        <div
+        style={{display: (isCollection === false && isProfile === false) ? 'block' : 'none' }}>
         <Menu.Item>
         <Icon size="small" name="filter"/>
         <Dropdown
-              openOnFocus
-              inline item placeholder='Category'
+              openOnFocus inline item fluid
+              placeholder='Category'
               options={ categories } 
               onChange = {async (event, {value} ) => {
                 this.props.changeCategory(value);
@@ -48,24 +60,36 @@ class App extends Component {
               }}
             />
         </Menu.Item>
+        </div>
+        <div
+        style={{ display: (isCollection === false && isProfile === false) ? 'block' : 'none' }}>
         <Menu.Item>
-        <Icon size="small" name="flag" />
         <Dropdown
-              openOnFocus
-              inline item placeholder='Countries'
-              options={ countries } 
-              onChange = {async (event, {value} ) => {
-                this.props.changeCountry(value);
-                await this.props.changeData();
-              } }
+          className='icon' icon='world'
+          labeled inline item search selection openOnFocus
+          options={countries}
+          placeholder='Select Country'
+          onChange = {async (event, {value} ) => {
+            this.props.changeCountry(value);
+            await this.props.changeData();
+          } }
         />
         </Menu.Item>
+        </div>
         <Menu.Menu position='right'>
-          <Menu.Item onClick={(event, data) => this.setState({isCollection: true, isProfile: false})}>
+          <Menu.Item 
+            name='collection'
+            active={activeItem === 'collection'}
+            onClick={(event, {name}) => this.setState({isCollection: true, isProfile: false, activeItem: name})}
+            >
           <Icon name="zip"/><p>Collection</p>
           </Menu.Item>
-          <Menu.Item onClick={(event, data) => this.setState({isCollection: false, isProfile: true})}>
-          <Icon name="vcard"/><p>Profile</p>
+          <Menu.Item 
+            name='profile'
+            active={activeItem === 'profile'}
+            onClick={(event, {name}) => this.setState({isCollection: false, isProfile: true, activeItem: name})}
+            >
+          <Icon name="user circle outline"/><p>Profile</p>
           </Menu.Item>
           <Menu.Item>
             <Button onClick={(e) => {this.logout(e)}} primary><Icon name="sign-out"/>Logout</Button>
@@ -73,7 +97,9 @@ class App extends Component {
         </Menu.Menu>
       </Container>
     </Menu>
-    {(this.state.isProfile) ? <Profile /> : (!this.state.isCollection) ? <News /> : <Collection />}
+
+    {(isProfile) ? <Profile /> : (!isCollection) ? <News /> : <Collection />}
+    
     </div>
   );
   }

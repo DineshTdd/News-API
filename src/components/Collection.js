@@ -6,8 +6,10 @@ import * as collectionActions from '../store/action/collectionAction';
 import backgroundImage from '../assets/torn-newspaper.jpg'
 
 class Collection extends Component {
-    componentDidMount() {
-        this.props.fetchNewsFromPG();
+    async componentDidMount() {
+        this.props.changeIsCollectionFetching(true);
+        await this.props.fetchNewsFromPG();
+        this.props.changeIsCollectionFetching(false);
     }
 
     // Handles user's delete request
@@ -45,7 +47,7 @@ class Collection extends Component {
                 : null
             }
             <div style={{display:'flex',justifyContent:'center',alignItems:'center', height: '100%'}}>
-                <ModalClose title={'Create News Article'} news_item={''} text={'Create Article'} />
+                <ModalClose title={'Create News Article'} news_item={''} text={(<p>Create Article &nbsp;<Icon name='pencil alternate' /></p>)} />
             </div>
             <div style={{margin: '10px'}}>
                 <Container style={{height: '100%'}}>
@@ -66,7 +68,9 @@ class Collection extends Component {
                                 <Image 
                                 bordered
                                 src={
-                                    item.imageurl
+                                    (item.imageurl.trim() !== '')
+                                    ? item.imageurl
+                                    : 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.ytimg.com%2Fvi%2FvzchjdTNWa0%2Fmaxresdefault.jpg&f=1&nofb=1'
                                 } />
                                 <Card.Content>
                                     <Card.Header>{item.title}</Card.Header>
@@ -118,7 +122,11 @@ const mapDispatchToProps = dispatch => {
         setFormValues: (item) => dispatch({type: collectionActions.SET_FORM_VALUES, payload: {news_item: item}}),
         updateNewsArticle: () => dispatch(collectionActions.updateNewsToPG()),
         clearFormValues: () => dispatch({type: collectionActions.CLEAR_FORM_VALUES}),
-        updateArticleRating: (rating, articleUrl) => dispatch(collectionActions.updateArticleRatingToPG(rating, articleUrl))
+        updateArticleRating: (rating, articleUrl) => dispatch(collectionActions.updateArticleRatingToPG(rating, articleUrl)),
+        changeIsCollectionFetching: (value) => dispatch({
+            type: collectionActions.CHANGE_ISCOLLECTIONFETCHING,
+            payload: {value: value}
+        })
     };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Collection);
