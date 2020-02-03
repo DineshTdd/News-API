@@ -9,11 +9,16 @@ exports.getUserActivityLogs = async (userId, res) => {
                     entryTime =  entryTime.toGMTString().slice(0, -4);
                     let exitTime = new Date(new Date(item.usage.exitTime).getTime() - new Date(item.usage.exitTime).getTimezoneOffset()*60*1000);
                     exitTime =  exitTime.toGMTString().slice(0, -4);
+                    let activeMinutes;
+                    activeMinutes = `${item.usage.activeMinutes} minutes`
+                    if (item.usage.activeMinutes > 100 ) {
+                        activeMinutes = `${Math.ceil( item.usage.activeMinutes/ 60 )} hours`;
+                    }
                     const newItem =  { 
                         usage:
                         { entryTime: entryTime,
                           exitTime: exitTime,
-                          activeMinutes: item.usage.activeMinutes },
+                          activeMinutes: activeMinutes },
                         _id: item._id,
                         userId: item.userId,
                         content: item.content,

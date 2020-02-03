@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Container, Card, Image, Pagination, Button, Icon, Message } from 'semantic-ui-react';
+import {Segment, Responsive, Container, Card, Image, Pagination, Button, Icon, Message, Modal } from 'semantic-ui-react';
+// import Iframe from 'react-iframe';
 import {connect} from 'react-redux';
 import backgroundImage from '../assets/newspaper-pieces-vintage.jpg';
 
@@ -8,15 +9,25 @@ import * as collectionActions from '../store/action/collectionAction';
 
 class News extends Component {
 
-    state = {
-        category: '',
-        country: '',
-        totalPage: 10,
-        activePage:1,
-        news_data: this.props.news_data,
-        isWelcomeMessageVisible: true,
-        isFirstVisit: this.props.isFirstVisit
-      }
+  constructor(props) {
+    super(props)
+    this.handleButtonPress = this.handleButtonPress.bind(this)
+    this.handleButtonRelease = this.handleButtonRelease.bind(this)
+    this.state = {
+      category: '',
+      country: '',
+      totalPage: 10,
+      activePage:1,
+      news_data: this.props.news_data,
+      isWelcomeMessageVisible: true,
+      isFirstVisit: this.props.isFirstVisit,
+      isModalOpen: false,
+      newsSrc: '',
+      newsTitle: '',
+      newsImageSrc: ''
+    }
+  }
+  
     
       // initial fetching of news from NEWSAPI and state is initialized
       componentDidMount() {
@@ -43,9 +54,26 @@ class News extends Component {
       this.props.toggleIsFirstVisit(false)
     }
 
+    handleButtonPress (newsSrc, newsTitle) {
+      this.buttonPressTimer = setTimeout(() => {
+        this.setState({isModalOpen: true, newsSrc, newsTitle})
+      }, 1000);
+    }
+  
+    handleButtonRelease () {
+      clearTimeout(this.buttonPressTimer);
+    }
+
+    close = () => this.setState({ isModalOpen: false })
+
+    Iframe = (props) => {
+      return (<div dangerouslySetInnerHTML={ {__html:  props.iframe?props.iframe:""}} />);
+    }
+
     // Renders news item fetched from NEWSAPI
     render () {
         const {news_data} = this.props;
+        const iframe = (src) => `<iframe height="400px" style="width: 100%;" scrolling="yes" title="fx." src="${src}" frameborder="no" allowtransparency="true" allowfullscreen="true"</iframe>`; 
         return (
             <div style={{ backgroundImage: `url(${backgroundImage})`, height: 'auto' }} >
               {
@@ -61,6 +89,21 @@ class News extends Component {
                 />
               )
               : null
+              }
+              {(this.state.isModalOpen)
+                ? (
+                  <Modal size='large' dimmer='blurring' open={this.state.isModalOpen} onClose={this.close} closeIcon>
+                    <Modal.Header>{this.state.newsTitle}</Modal.Header>
+                    <Modal.Content style={{ height: '100%', width: '100%' }}>
+                      <Modal.Description style={{ height: '100%', width: '100%' }}>
+                      <Segment.Group style={{ height: '100%', width: '100%' }} raised>
+                        <Responsive as={Segment}><this.Iframe iframe={iframe(this.state.newsSrc)} /></Responsive>
+                      </Segment.Group>
+                      </Modal.Description>
+                    </Modal.Content>
+                  </Modal>
+                )
+                : (null)
               }
             <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
                 <Pagination
@@ -89,7 +132,13 @@ class News extends Component {
                     : (
                     <Card.Group>
                         {news_data.map((item)=> (
-                            <Card href={ item.url } target="_blank" key={ item.key }centered raised>
+                          <Card 
+                              onTouchStart={() => this.handleButtonPress(item.url, item.title)} 
+                              onTouchEnd={this.handleButtonRelease} 
+                              onMouseDown={() => this.handleButtonPress(item.url, item.title)} 
+                              onMouseUp={this.handleButtonRelease} 
+                              onMouseLeave={this.handleButtonRelease}
+                              href={ item.url } target="_blank" key={ item.key }centered raised>
                                 <Image bordered src={ (item.urlToImage) ? item.urlToImage : 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.ytimg.com%2Fvi%2FvzchjdTNWa0%2Fmaxresdefault.jpg&f=1&nofb=1' }  />
                                 <Card.Content>
                                     <Card.Header>{ item.title }</Card.Header>
@@ -143,3 +192,12 @@ const mapStateToProps = state => {
   };
 
 export default connect(mapStateToProps, mapDispatchToProps )(News);
+
+// eslint-disable-next-line no-lone-blocks
+{/* <Iframe url={item.url}
+                          width="450px"
+                          height="450px"
+                          id="myId"
+                          className="myClassname"
+                          display="initial"
+                          position="relative"/>  */}
