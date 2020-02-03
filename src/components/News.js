@@ -105,7 +105,7 @@ class News extends Component {
                 )
                 : (null)
               }
-            <div style={{display:'flex',justifyContent:'center',alignItems:'center', paddingBottom: '20px'}}>
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center', paddingTop: '20px', paddingBottom: '20px'}}>
                 <Pagination
                 inverted
                 activePage={this.props.activePage}
