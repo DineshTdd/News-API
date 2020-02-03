@@ -9,6 +9,7 @@ import collectionReducer from './store/reducers/collectionReducer';
 import authReducer from './store/reducers/authReducers';
 import userReducer from './store/reducers/userReducer';
 import logsReducer from './store/reducers/logsReducer';
+import todoReducer from './store/reducers/_todo';
 import { createStore, combineReducers, applyMiddleware } from 'redux'; // standalone redux store import
 import { Provider } from 'react-redux'; // connects redux to react
 import ReduxThunk from 'redux-thunk';
@@ -29,7 +30,8 @@ const rootReducer = (History) => combineReducers({
     collections: collectionReducer,
     auth: authReducer,
     user: userReducer,
-    logs: logsReducer
+    logs: logsReducer,
+    todo: todoReducer
   });
 
   // global store for app with ReduxThunk as middleware

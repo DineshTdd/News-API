@@ -65,7 +65,7 @@ class Collection extends Component {
         const {news_data, isCollectionFetching} = this.props;
         const iframe = (src) => `<iframe height="400px" style="width: 100%;" scrolling="yes" title="fx." src="${src}" frameborder="no" allowtransparency="true" allowfullscreen="true"</iframe>`; 
         return (
-        <div style={{  backgroundImage: `url(${backgroundImage})`, width:'100%', minHeight: '100em', height: '100%' }}>
+        <div style={{  backgroundImage: `url(${backgroundImage})`, width:'100%', minHeight: '50em', height: '100%' }}>
             {
                 (news_data.length === 0)
                 ? (

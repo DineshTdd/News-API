@@ -40,21 +40,21 @@ class FormComponent extends Component {
     <Form.Field>
     <Form.Field>
       <label>Author</label>
-      <input placeholder='Author' defaultValue={(this.props.news_item !== '') ? this.props.news_item.author : ''} onChange={async (event) => { 
+      <input style={{ fontWeight: '500'}} placeholder='Author' defaultValue={(this.props.news_item !== '') ? this.props.news_item.author : ''} onChange={async (event) => { 
         await this.setState({formValues: {...this.state.formValues, author: event.target.value}});
         this.props.updateStoreFormValues(this.state.formValues);
       }
         } />
     </Form.Field>
       <label>Title</label>
-      <input placeholder='Title' defaultValue={(this.props.news_item !== '') ? this.props.news_item.title : ''} onChange={async (event) => {
+      <input style={{ fontWeight: '500'}} placeholder='Title' defaultValue={(this.props.news_item !== '') ? this.props.news_item.title : ''} onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, title: event.target.value}});
         this.props.updateStoreFormValues(this.state.formValues);
         }} />
     </Form.Field>
     <Form.Field>
       <label>Image Url</label>
-      <input placeholder='Image Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.imageurl : ''} 
+      <input style={{ fontWeight: '500'}} placeholder='Image Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.imageurl : ''} 
       onBlur={(e) => this.checkImage(e)}
       onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, imageUrl: event.target.value}});
@@ -63,14 +63,14 @@ class FormComponent extends Component {
     </Form.Field>
     <Form.Field>
       <label>Description</label>
-      <input placeholder='Description' defaultValue={(this.props.news_item !== '') ? this.props.news_item.description : ''} onChange={async (event) => {
+      <input style={{ fontWeight: '500'}} placeholder='Description' defaultValue={(this.props.news_item !== '') ? this.props.news_item.description : ''} onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, description: event.target.value}});
         this.props.updateStoreFormValues(this.state.formValues);
         }} />
     </Form.Field>
     <Form.Field >
       <label>Article Url</label>
-      <input disabled={(this.props.isEditing) ? true : false} placeholder='Article Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.articleurl : ''} 
+      <input style={{ fontWeight: '500'}} disabled={(this.props.isEditing) ? true : false} placeholder='Article Url' defaultValue={(this.props.news_item !== '') ? this.props.news_item.articleurl : ''} 
       onBlur={(e) => this.isValidURL(e.target.value)}
       onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, articleUrl: event.target.value}});
@@ -79,7 +79,7 @@ class FormComponent extends Component {
     </Form.Field>
     <Form.Field>
       <label>Source</label>
-      <input placeholder='Source' defaultValue={(this.props.news_item !== '') ? this.props.news_item.source : ''} onChange={async (event) => {
+      <input style={{ fontWeight: '500'}} placeholder='Source' defaultValue={(this.props.news_item !== '') ? this.props.news_item.source : ''} onChange={async (event) => {
         await this.setState({formValues: {...this.state.formValues, sourceName: event.target.value}})
         this.props.updateStoreFormValues(this.state.formValues);
       }} />
