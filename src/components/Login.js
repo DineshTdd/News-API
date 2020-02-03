@@ -18,10 +18,12 @@ class Login extends Component {
     }
 
     componentDidMount() {
+        this.setState({isUserLoggingIn: false})
         this._isMounted = true;
     }
 
     componentWillUnmount() {
+        this.setState({isUserLoggingIn: false})
         this._isMounted = false;
      }
 
@@ -36,6 +38,7 @@ class Login extends Component {
         await this.setState({isUserLoggingIn: true})
         if(this.state.email.trim().length === 0 || this.state.password.trim().length === 0 ) {
             alert('Please fill in the required fields and proceed!')
+            await this.setState({isUserLoggingIn: false})
         } else {
             const userDetails = this.state;
             this.setState({

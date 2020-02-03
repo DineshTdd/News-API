@@ -28,8 +28,11 @@ class Collection extends Component {
     // Handles user's delete request
     handleDelete = async (e,articleurl) => {
         e.preventDefault();
-        await this.props.deleteNewsFromPG(articleurl);
+        const r = window.confirm("Are you sure of deleting?!");
+        if (r === true) {
+            await this.props.deleteNewsFromPG(articleurl);
         await this.props.fetchNewsFromPG();
+        } 
     };
 
     // Handles user's edit request
