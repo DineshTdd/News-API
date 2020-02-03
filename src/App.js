@@ -82,18 +82,25 @@ class App extends Component {
             active={activeItem === 'collection'}
             onClick={(event, {name}) => this.setState({isCollection: true, isProfile: false, activeItem: name})}
             >
-          <Icon name="zip"/><p>Collection</p>
+          
           </Menu.Item>
-          <Menu.Item 
+          <Dropdown inline item text='More'>
+          <Dropdown.Menu>
+            <Dropdown.Item
             name='profile'
             active={activeItem === 'profile'}
             onClick={(event, {name}) => this.setState({isCollection: false, isProfile: true, activeItem: name})}
             >
-          <Icon name="user circle outline"/><p>Profile</p>
-          </Menu.Item>
-          <Menu.Item>
-            <Button onClick={(e) => {this.logout(e)}} primary><Icon name="sign-out"/>Logout</Button>
-          </Menu.Item>
+            <Icon name="user circle outline"/>Profile
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item>
+              
+                <Button onClick={(e) => {this.logout(e)}} primary><Icon name="sign-out"/>Logout</Button>
+              
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
         </Menu.Menu>
       </Container>
     </Menu>

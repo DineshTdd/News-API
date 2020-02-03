@@ -64,7 +64,7 @@ class UserActivity extends Component {
                                     <Feed.Content>
                                         <Feed.Summary>
                                             <Feed.User>Usage Activity: </Feed.User> <Icon name='history' size='small' /> {item.content} {item.usage.entryTime}
-                                            <Feed.Date>used for {item.usage.activeMinutes} minutes</Feed.Date>
+                                            <Feed.Date>used for {item.usage.activeMinutes}</Feed.Date>
                                         </Feed.Summary>
                                     </Feed.Content>
                                 </Feed.Event>

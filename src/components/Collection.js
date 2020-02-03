@@ -1,11 +1,24 @@
 import React, {Component} from 'react';
 import ModalClose from './ModalClose';
 import {connect} from 'react-redux';
-import {Container, Card, Image, Button, Icon, Rating, Message } from 'semantic-ui-react';
+import {Container, Card, Image, Button, Icon, Rating, Message, Modal, Responsive, Segment } from 'semantic-ui-react';
 import * as collectionActions from '../store/action/collectionAction';
 import backgroundImage from '../assets/torn-newspaper.jpg'
 
 class Collection extends Component {
+
+    constructor(props) {
+        super(props)
+        this.handleButtonPress = this.handleButtonPress.bind(this)
+        this.handleButtonRelease = this.handleButtonRelease.bind(this)
+        this.state = {
+          isModalOpen: false,
+          newsSrc: '',
+          newsTitle: '',
+          newsImageSrc: ''
+        }
+      }
+
     async componentDidMount() {
         this.props.changeIsCollectionFetching(true);
         await this.props.fetchNewsFromPG();
@@ -32,8 +45,25 @@ class Collection extends Component {
         await this.props.fetchNewsFromPG();
     }
 
+    handleButtonPress (newsSrc, newsTitle) {
+        this.buttonPressTimer = setTimeout(() => {
+          this.setState({isModalOpen: true, newsSrc, newsTitle})
+        }, 1000);
+      }
+    
+      handleButtonRelease () {
+        clearTimeout(this.buttonPressTimer);
+      }
+  
+      close = () => this.setState({ isModalOpen: false })
+  
+      Iframe = (props) => {
+        return (<div dangerouslySetInnerHTML={ {__html:  props.iframe?props.iframe:""}} />);
+      }
+
     render() {
         const {news_data, isCollectionFetching} = this.props;
+        const iframe = (src) => `<iframe height="400px" style="width: 100%;" scrolling="yes" title="fx." src="${src}" frameborder="no" allowtransparency="true" allowfullscreen="true"</iframe>`; 
         return (
         <div style={{  backgroundImage: `url(${backgroundImage})`, width:'100%', minHeight: '100em', height: '100%' }}>
             {
@@ -46,6 +76,21 @@ class Collection extends Component {
                 )
                 : null
             }
+            {(this.state.isModalOpen)
+                ? (
+                  <Modal size='large' dimmer='blurring' open={this.state.isModalOpen} onClose={this.close} closeIcon>
+                    <Modal.Header>{this.state.newsTitle}</Modal.Header>
+                    <Modal.Content style={{ height: '100%', width: '100%' }}>
+                      <Modal.Description style={{ height: '100%', width: '100%' }}>
+                      <Segment.Group style={{ height: '100%', width: '100%' }} raised>
+                        <Responsive as={Segment}><this.Iframe iframe={iframe(this.state.newsSrc)} /></Responsive>
+                      </Segment.Group>
+                      </Modal.Description>
+                    </Modal.Content>
+                  </Modal>
+                )
+                : (null)
+              }
             <div style={{display:'flex',justifyContent:'center',alignItems:'center', height: '100%'}}>
                 <ModalClose title={'Create News Article'} news_item={''} text={(<p>Create Article &nbsp;<Icon name='pencil alternate' /></p>)} />
             </div>
@@ -64,7 +109,13 @@ class Collection extends Component {
                     : (
                     <Card.Group>
                         {news_data.map((item)=> (
-                            <Card href={item.articleurl} target="_blank" key={item.publishedat} centered raised>
+                            <Card
+                                onTouchStart={() => this.handleButtonPress(item.articleurl, item.title)} 
+                                onTouchEnd={this.handleButtonRelease} 
+                                onMouseDown={() => this.handleButtonPress(item.articleurl, item.title)} 
+                                onMouseUp={this.handleButtonRelease} 
+                                onMouseLeave={this.handleButtonRelease}
+                                href={item.articleurl} target="_blank" key={item.publishedat} centered raised>
                                 <Image 
                                 bordered
                                 src={
