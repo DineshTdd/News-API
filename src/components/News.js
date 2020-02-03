@@ -105,7 +105,7 @@ class News extends Component {
                 )
                 : (null)
               }
-            <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center', paddingBottom: '20px'}}>
                 <Pagination
                 inverted
                 activePage={this.props.activePage}
@@ -162,6 +162,16 @@ class News extends Component {
                     </Card.Group>
                     ) }
                 </Container>
+            </div>
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center', paddingTop: '20px',paddingBottom: '20px'}}>
+                <Pagination
+                inverted
+                activePage={this.props.activePage}
+                onPageChange={async (e, {activePage}) => {
+                    this.props.changeActivePage(activePage);
+                    await this.props.changeData();
+                }}
+                totalPages={this.props.totalPage} />
             </div>
             </div>
         );

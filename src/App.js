@@ -45,7 +45,7 @@ class App extends Component {
           onClick={(event, {name}) => this.setState({isCollection: false, isProfile: false, isTodo: false, activeItem: name})} 
           header>
           <Button style={{height: '50px',width: '100%', marginLeft: '25%'}} size="massive"inverted animated='fade'>
-            <Button.Content visible><p>News_Api</p></Button.Content>
+            <Button.Content visible><p>News_App</p></Button.Content>
             <Button.Content hidden><Icon size="big" name="newspaper outline"/></Button.Content>
           </Button>
         </Menu.Item>
