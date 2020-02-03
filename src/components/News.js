@@ -147,7 +147,7 @@ class News extends Component {
                                 </Card.Content>
                                 <Card.Content textAlign="right" extra>
                                     { item.sourceName } <br />
-                                    <Button style={{float: 'right'}}
+                                    <Button style={{float: 'right', height: '25px'}}
                                         onClick={ (e) => this.handleBookmark(e,item)} 
                                         animated='vertical'>
                                         <Button.Content hidden><Icon name='bookmark' /></Button.Content>

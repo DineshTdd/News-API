@@ -36,7 +36,7 @@ class UserActivity extends Component {
                     : (
                         <Feed>
                         {logsData.map((item) => (
-                                <Feed.Event>
+                                <Feed.Event key={item._id}>
                                     <Feed.Label>
                                         <div style={{
                                             display: 'inline-block',
