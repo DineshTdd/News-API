@@ -66,7 +66,7 @@ class ModalClose extends Component{
   // @usage: for both edit and create article
   render() {
     return(
-      <Modal trigger={<Button size={(this.props.size) ? this.props.size : 'medium'} onClick={(e) => {this.handleOpen(e, this.props.news_item)}}>{this.props.text}</Button>}
+      <Modal trigger={<Button style={{height: this.props.height}} size={(this.props.size) ? this.props.size : 'medium'} onClick={(e) => {this.handleOpen(e, this.props.news_item)}}>{this.props.text}</Button>}
       open={this.state.modalOpen}
        closeIcon
        onClose={this.handleClose}>

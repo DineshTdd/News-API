@@ -95,7 +95,7 @@ class Collection extends Component {
                 : (null)
               }
             <div style={{display:'flex',justifyContent:'center',alignItems:'center', height: '100%'}}>
-                <ModalClose title={'Create News Article'} news_item={''} text={(<p>Create Article &nbsp;<Icon name='pencil alternate' /></p>)} />
+                <ModalClose title={'Create News Article'} height='80px' news_item={''} text={(<p>Create Article &nbsp;<Icon name='pencil alternate' /></p>)} />
             </div>
             <div style={{margin: '10px'}}>
                 <Container style={{height: '100%'}}>
@@ -146,7 +146,7 @@ class Collection extends Component {
                                                 <Icon name='trash alternate outline' />
                                             </Button.Content>
                                         </Button>
-                                        <ModalClose title={'Update News Article'} news_item={item} size={'mini'} text={<Icon name='edit'/>} ></ModalClose>
+                                        <ModalClose title={'Update News Article'} height='33px' news_item={item} size={'mini'} text={<Icon name='edit'/>} ></ModalClose>
                                     </div>
                                 </Card.Content>
                             </Card>
