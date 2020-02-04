@@ -1,8 +1,67 @@
-const Logs = require('../models/Logs');
+const { UserActivityLogs, CollectionActivityLogs } = require('../models/Logs');
+const {client: redisClient} = require('../config/redisconfig');
+const mongoose = require('mongoose');
+
+exports.redisCollectionActivitySave = async (res, createdAt, userid, content, articleUrl) => {
+    const hsetname = `collectionlog-${userid}-${createdAt}`
+    await redisClient.HMSET(hsetname, ["content", content, "savedat", createdAt, "articleurl", articleUrl, "userid", userid], async function(err,response){
+        if(err){
+            console.log(err);
+            return res.status(200).json({success: false});
+        }else{
+            await redisClient.LPUSH(`collectionlogs-${userid}`, hsetname)
+            return res.status(200).json({success: true});
+        }
+    });
+}
+
+exports.redisCollectionActivityToMongo = async (userid) => {
+    try {
+        await redisClient.LRANGE(`collectionlogs-${userid}`, 0, -1, async (err, reply) => {
+        if (err) console.log(err); 
+        await reply.forEach(async element => {
+           await redisClient.HMGET(element, ["content", "savedat", "articleurl", "userid"], function(err,response){
+            if(err){
+                console.log(err)
+            }else{
+                const _id = mongoose.Types.ObjectId();
+                const collectionLog = new CollectionActivityLogs({
+                    _id: _id,
+                    userId: response[3],
+                    content: response[0],
+                    articleUrl: response[2],
+                    date: response[1],
+                });
+                collectionLog.save().then(createdPost => 
+                    createdPost
+                );     
+            }
+            });
+            await redisClient.HDEL(element, ["content", "savedat", "articleurl", "userid"], function(err,response){
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log(response)
+                }
+            });
+            await redisClient.DEL(`collectionlogs-${userid}`, function(err,response){
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log(response)
+                }
+            });
+            return;
+        });
+    });
+    } catch(err) {
+        console.log(err);
+    }
+}
 
 exports.getUserActivityLogs = async (userId, res) => {
     try {
-        await Logs.find({userId: userId}).then( async result =>{
+        await UserActivityLogs.find({userId: userId}).then( async result =>{
             if(result.length !== 0) {
                let newresult = await result.map( item => {
                     let entryTime = new Date(new Date(item.usage.entryTime).getTime() - new Date(item.usage.entryTime).getTimezoneOffset()*60*1000);

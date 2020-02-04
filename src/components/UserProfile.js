@@ -28,7 +28,6 @@ class UserProfile extends Component {
     async fileSelectedHandler(e) {
         e.preventDefault();  
         const {files} = e.target;
-        console.log(files[0])
         if (!["image/png","image/gif","image/jpg","image/jpeg"].includes(files[0].type)) {
             return alert('Please upload a valid image file!')
         }

@@ -1,14 +1,13 @@
 const {client} = require('../../config/redisconfig');
 // const msgpack = require("msgpack-lite");
-const sizeof = require('object-sizeof');
+// const sizeof = require('object-sizeof');
 const { performance, PerformanceObserver } = require('perf_hooks');
 
  
 
 exports.RedisLogSave = async (message) => {
     try{
-    
-    console.log(sizeof(message))
+
 
     // encode from JS Object to MessagePack (Buffer)
     // let buffer = msgpack.encode(JSON.stringify(message));
@@ -26,7 +25,6 @@ exports.RedisLogSave = async (message) => {
     // performance.mark('B')
     // performance.measure('A to B', 'A', 'B') // It took 0.174399 ms.
     
-    console.log(sizeof(buffer));
 
     await client.LPUSH('logs', buffer);
     // await client.LRANGE('logs', 0, -1, async (err, reply) => {

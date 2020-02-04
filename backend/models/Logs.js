@@ -21,4 +21,27 @@ const logsSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Logs', logsSchema);
+const collectionLogsSchema = new mongoose.Schema({
+    _id: mongoose.Schema.ObjectId,
+    userId: {
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    articleUrl: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+});
+
+module.exports = {
+    UserActivityLogs: mongoose.model('Logs', logsSchema),
+    CollectionActivityLogs: mongoose.model('CollectionLogs', collectionLogsSchema)
+}

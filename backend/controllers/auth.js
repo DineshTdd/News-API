@@ -1,8 +1,9 @@
 const User = require('../models/User');
-const Logs = require('../models/Logs');
+const { UserActivityLogs } = require('../models/Logs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { redisCollectionActivityToMongo } = require('./logs');
 
 
 exports.registerNewUser = async ( user, res ) => {
@@ -90,7 +91,7 @@ exports.logoutUser = async (logoutTime, userId, res) => {
             }
         }).catch(err => res.status(400).send(err))
         const activeMinutes = Math.ceil(Math.abs(date - lastLogin) / (1000 * 60 )); // for days 1000 * 60 * 60 * 24
-        const newLog = new Logs({
+        const newLog = new UserActivityLogs({
             _id: _id,
             userId: userId,
             content: `You were active on `,
@@ -100,6 +101,7 @@ exports.logoutUser = async (logoutTime, userId, res) => {
                 activeMinutes: activeMinutes
             }
         });
+        await redisCollectionActivityToMongo(userId);
         return newLog.save().then(createdPost => 
             res.status(201).json({
                 message: `Log ${createdPost} added successfully`,
