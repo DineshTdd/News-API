@@ -1,6 +1,7 @@
 import { push } from 'connected-react-router';
-// import {createBrowserHistory} from 'history';
+import * as logsAction from './logsAction';
 const axios = require('axios');
+// import {createBrowserHistory} from 'history';
 export const SET_USER_SESSION = 'SET_USER_SESSION';
 export const REMOVE_USER_SESSION = 'REMOVE_USER_SESSION';
 
@@ -82,6 +83,9 @@ export const removeUserSession = () => {
       await dispatch({
         type: REMOVE_USER_SESSION
       });
+      await dispatch({
+        type: logsAction.RESET_LOGS_STATE
+      })
       await dispatch(push('/'))
     } catch(err) {
       console.error(err);

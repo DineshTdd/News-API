@@ -23,6 +23,10 @@ const logsSchema = new mongoose.Schema({
 
 const collectionLogsSchema = new mongoose.Schema({
     _id: mongoose.Schema.ObjectId,
+    docId: {
+        type: Number,
+        required: true
+    },
     userId: {
         type: String,
         required: true

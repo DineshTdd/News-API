@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as logsAction from '../store/action/logsAction';
-import {Message, Feed, Dimmer, Loader, Icon } from 'semantic-ui-react';
+import {Message, Feed, Dimmer, Loader, Icon, Button } from 'semantic-ui-react';
 
-class UserActivity extends Component {
+class CollectionActivity extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,12 +13,18 @@ class UserActivity extends Component {
 
     async componentDidMount() {
         this.setState({isActivityLoading: true})
-        await this.props.fetchUserActivityLogs();
+        await this.props.fetchCurrentCollectionLogs();
         this.setState({isActivityLoading: false})
+        if (this.props.isFirstVisit) {
+            this.setState({isActivityLoading: true})
+            await this.props.fetchCollectionActivityLogs();
+            this.setState({isActivityLoading: false})
+        }
     }
 
     render() {
-        const {logsData} = this.props;
+        const { currentCollectionLogs,collectionLogsData, remainingCollectionLogs} = this.props;
+        const totalCollectionLogsData = currentCollectionLogs.concat(collectionLogsData);
         return (this.state.isActivityLoading) 
                 ? (
                     <Dimmer active>
@@ -26,7 +32,7 @@ class UserActivity extends Component {
                     </Dimmer>
                 )
                 : (<div>
-                { (logsData.length === 0) ? 
+                { (collectionLogsData.length === 0) ? 
                     (
                         <Message style={{ width: '50%', marginLeft: '25%'}} info>
                             <Message.Header>No activities right now!</Message.Header>
@@ -35,7 +41,10 @@ class UserActivity extends Component {
                     )
                     : (
                         <Feed>
-                        {logsData.map((item) => (
+                        {totalCollectionLogsData.map((item) =>{
+                            let Time = new Date(new Date(item.date).getTime() - new Date(item.date).getTimezoneOffset()*60*1000);
+                            Time =  Time.toGMTString().slice(0, -4);
+                            return (                                
                                 <Feed.Event key={item._id}>
                                     <Feed.Label>
                                         <div style={{
@@ -63,14 +72,18 @@ class UserActivity extends Component {
                                     </Feed.Label>
                                     <Feed.Content>
                                         <Feed.Summary>
-                                            <Feed.User>Usage Activity: </Feed.User> <Icon name='history' size='small' /> {item.content} {item.usage.entryTime}
-                                            <Feed.Date>used for {item.usage.activeMinutes}</Feed.Date>
+                                            <Feed.User>Collection Activity: </Feed.User> <Icon name='history' size='small' /> {item.content} on {Time}
+                                            <Feed.Date>{item.articleUrl}</Feed.Date>
                                         </Feed.Summary>
                                     </Feed.Content>
                                 </Feed.Event>
-                        ))}
+                        )})}
                         </Feed>
                     )
+                }
+                {(remainingCollectionLogs > 0) 
+                    ? (<Button style={{ marginLeft: '40%', width: '120px'}} onClick={this.props.fetchCollectionActivityLogs}>Load More</Button>)
+                    : (null)
                 }
                 </div>
             )
@@ -78,16 +91,19 @@ class UserActivity extends Component {
 }
 const mapStateToProps = state => {
     return {
-        logsData: state.logs.userActivityLogs,
+        collectionLogsData: state.logs.userCollectionLogs,
+        currentCollectionLogs: state.logs.currentCollectionLogs,
+        remainingCollectionLogs: state.logs.remainingCollectionLogs,
+        isFirstVisit: state.logs.isFirstVisit,
         profileImage: state.user.userData.userProfilePicture
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchUserActivityLogs: () => dispatch(logsAction.fetchUserActivityLogs()),
+        fetchCollectionActivityLogs: () => dispatch(logsAction.fetchCollectionActivityLogs()),
+        fetchCurrentCollectionLogs: () => dispatch(logsAction.fetchCurrentCollectionLogs())
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserActivity);
-
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionActivity);
