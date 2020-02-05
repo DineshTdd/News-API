@@ -40,7 +40,9 @@ exports.postNews = async (req, res, next) => {
                 return res.status(200).json({success: false});
             }
             if (result.rowCount === 1) {
-                redisCollectionActivitySave(res, Date.now(), userid, 'You saved an article', formValues.articleUrl)
+                let date = new Date();
+                date = date.toISOString()
+                redisCollectionActivitySave(res, date, userid, 'You saved an article', formValues.articleUrl)
             } else if(result.rowCount === 0) {
                 return res.status(200).json({success: false});
             }
@@ -61,14 +63,17 @@ exports.deleteNews = async (req, res, next) => {
         const {id} = req.body;
         const queryString = 'DELETE FROM public.collection where articleurl=$1';
         await pgClient.query( queryString, [id],function (err, result) {
-            console.log('Hi from delete!')
             if (err) {
                 throw new Error(err);
             }
+            console.log(result)
             if(result.rowCount === 0) {
                 return res.status(404).json({success: false})
             }
-            redisCollectionActivitySave(res, Date.now(), req.header('userid'), 'You have deleted an article!', id)
+            let date = new Date()
+            date = date.toISOString()
+            redisCollectionActivitySave(res, date, req.header('userid'), 'You have deleted an article!', id)
+            return res.status(200).json({success: true});
         });
     } catch (err) {
         console.error(err);
@@ -89,6 +94,9 @@ exports.updateNews = async (req, res, next) => {
             if (err) {
                 throw new Error(err);
             }
+            let date = new Date();
+            date = date.toISOString()
+            redisCollectionActivitySave(res, date, req.header('userid'), 'You edited an article', formValues.articleUrl)
             return res.status(200).json({success: true});
         });
     } catch (err) {
