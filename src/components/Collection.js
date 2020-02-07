@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Container, Card, Image, Button, Icon, Rating, Message, Modal, Responsive, Segment } from 'semantic-ui-react';
 import * as collectionActions from '../store/action/collectionAction';
 import backgroundImage from '../assets/torn-newspaper.jpg'
+import './Styles/TextTruncate.css';
 
 class Collection extends Component {
 
@@ -129,7 +130,8 @@ class Collection extends Component {
                                 <Card.Content>
                                     <Card.Header>{item.title}</Card.Header>
                                     <Card.Meta textAlign="right">{item.author}</Card.Meta>
-                                    <Card.Description>{item.description}</Card.Description>
+                                    <Card.Description 
+                                        className="multiline-ellipsis">{item.description}</Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
                                     <div style={{padding: '10px'}}>

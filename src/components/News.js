@@ -3,6 +3,7 @@ import {Segment, Responsive, Container, Card, Image, Pagination, Button, Icon, M
 import SpringCard from './SpringCard';
 import {connect} from 'react-redux';
 import backgroundImage from '../assets/newspaper-pieces-vintage.jpg';
+import './Styles/TextTruncate.css';
 
 import * as newsActions from '../store/action/action';
 import * as collectionActions from '../store/action/collectionAction';
@@ -144,7 +145,7 @@ class News extends Component {
                                 <Card.Content>
                                     <Card.Header>{ item.title }</Card.Header>
                                     <Card.Meta textAlign="right">{item.author}</Card.Meta>
-                                    <Card.Description>{item.description}</Card.Description>
+                                    <Card.Description className="multiline-ellipsis">{item.description}</Card.Description>
                                 </Card.Content>
                                 <Card.Content textAlign="right" extra>
                                     { item.sourceName } <br />
