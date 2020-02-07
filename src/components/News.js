@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Segment, Responsive, Container, Card, Image, Pagination, Button, Icon, Message, Modal } from 'semantic-ui-react';
-// import Iframe from 'react-iframe';
+import SpringCard from './SpringCard';
 import {connect} from 'react-redux';
 import backgroundImage from '../assets/newspaper-pieces-vintage.jpg';
 
@@ -130,9 +130,10 @@ class News extends Component {
                     </div>
                       )
                     : (
-                    <Card.Group>
+                    <Card.Group doubling centered stackable>
                         {news_data.map((item)=> (
-                          <Card 
+                          <SpringCard>
+                          <Card style={{ width: '100%' }}
                               onTouchStart={() => this.handleButtonPress(item.url, item.title)} 
                               onTouchEnd={this.handleButtonRelease} 
                               onMouseDown={() => this.handleButtonPress(item.url, item.title)} 
@@ -157,6 +158,7 @@ class News extends Component {
                                     </Button>
                                 </Card.Content>
                             </Card>
+                            </SpringCard>
                         ))
                         }
                     </Card.Group>
