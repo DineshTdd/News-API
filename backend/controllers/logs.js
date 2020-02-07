@@ -163,7 +163,6 @@ exports.redisCollectionActivityToMongo = async (userid) => {
                     const response = await hset(datum);
                     let collectionLog = await createCollectionLog(response);
                     await delHset(datum);
-                    // dataArr.push(collectionLog);
                     return collectionLog;
                 }).then((result) => {
                     return resolve(result);
