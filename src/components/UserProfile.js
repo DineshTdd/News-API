@@ -31,11 +31,11 @@ class UserProfile extends Component {
         if (!["image/png","image/gif","image/jpg","image/jpeg"].includes(files[0].type)) {
             return alert('Please upload a valid image file!')
         }
-        if(files[0].size > 5000000) {
+        if(files[0].size > 3500000) {
             return alert('Please upload a image file of size less than 1MB!')
         }
-        await this.fileLoader(files[0]);
-        await this.setState({fileName: files[0].name})
+        this.fileLoader(files[0]);
+        this.setState({fileName: files[0].name})
         await this.props.setProfilePicture(files[0]);
 
     }
@@ -47,7 +47,7 @@ class UserProfile extends Component {
         date = date.toGMTString();
         date = date.slice(0, -4); // removes GMT
         return (
-            <Card>
+            <Card style={{height: 'auto'}}>
                 <Image src={(file) ? this.state.file : (userData.userProfilePicture) ? userData.userProfilePicture : 'https://react.semantic-ui.com/images/avatar/large/matthew.png'  } wrapped ui={false}/>
                 <Card.Content>
                 <div>

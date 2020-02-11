@@ -174,7 +174,6 @@ exports.redisCollectionActivityToMongo = async (userid) => {
             
             getCollectionLogs(reply).then(async result => {                
                 const newresult = result.sort((a, b) => new Date(a.date) - new Date(b.date))
-                console.log(newresult)
                 await newresult.forEach(element =>{
                     const _id = mongoose.Types.ObjectId();
                     const collectionLog = new CollectionActivityLogs({
@@ -260,8 +259,36 @@ exports.getUserActivityLogs = async (userId, res) => {
                     return newItem
                 })
                 newresult = newresult.sort((a, b) => new Date(b.usage.exitTime) - new Date(a.usage.exitTime))
+                const groups = newresult.reduce((groups, usage) => {
+                    const date = usage.date.toISOString().split('T')[0];
+                    if (!groups[date]) {
+                      groups[date] = [];
+                    }
+                    groups[date].push(usage.usage.activeMinutes);
+                    return groups;
+                  }, {});
+                //   let obj = {};
+                  const resp = await Promise.all(Object.keys(groups).map(async function(key, index) {
+                      let arr = [];
+                    await groups[key].map((item) => {
+                        let minutes;
+                        if(/minutes/.test(item)) {
+                            minutes = item.match(/\d/g);
+                            minutes = parseInt(minutes.join(""));
+                        } else if (/hours/.test(item)) {
+                            minutes = item.match(/\d/g);
+                            minutes = minutes.join("");
+                            minutes = parseInt(minutes) * 60
+                        }
+                        arr.push(minutes)
+                        return minutes;  
+                    });
+                    return {date: key, values: arr, totalDuration: arr.reduce((a,b) => a+b)};
+                  }));
+                const resArr = await Promise.all(resp)
                 return res.status(200).json({
-                    result: newresult
+                    result: newresult,
+                    values: resArr
                 });
             } else {
                 return res.status(200).json({

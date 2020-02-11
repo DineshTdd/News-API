@@ -1,0 +1,34 @@
+Form {
+    font: 1em sans-serif;
+    font-weight: 400;
+    font-size: medium;
+}
+
+#name, #email, #password {
+    font: 1em sans-serif;
+    font-weight: 300;
+    font-size: medium;
+}
+
+.divStyle {
+    flex: 1;
+    min-height: 100%;
+    width: 100%;
+    height: 80%;
+    position: fixed;
+    background-size: cover;
+    background-image: url('../../assets/collection-newspapers.jpg');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 140px;
+    padding-left: auto;
+}
+
+.cardStyle {
+    max-width: 300px;
+    max-height: 400px;
+    height: auto;
+    box-shadow: 5px 10px 18px #888888;
+    border-radius: 10;
+}

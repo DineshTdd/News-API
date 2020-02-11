@@ -1,13 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as logsAction from '../store/action/logsAction';
-import {Message, Feed, Dimmer, Loader, Icon } from 'semantic-ui-react';
+import UsageActivityChart from '../components/UsageActivityChart';
+import './Styles/NumericStyle.css'
+import {Message, Feed, Dimmer, Loader, Icon, Segment } from 'semantic-ui-react';
 
 class UserActivity extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isActivityLoading: false
+            isActivityLoading: false,
         }
     }
 
@@ -15,10 +17,25 @@ class UserActivity extends Component {
         this.setState({isActivityLoading: true})
         await this.props.fetchUserActivityLogs();
         this.setState({isActivityLoading: false})
+        
     }
 
     render() {
         const {logsData} = this.props;
+        let { graphData } = this.props;
+        let averageTime = 0;
+        // if (graphData.length > 0 && graphData.length > 7) {
+        //     for (let i=0; i< 7; i++) {
+        //         averageTime += graphData[i].totalDuration;
+        //     }
+        //     averageTime = Math.ceil(averageTime / 7);
+        // } else if(graphData.length > 0 && graphData.length <= 7 ) {
+        //     graphData.map(item => {averageTime += item.totalDuration; return item})
+        //     averageTime = Math.ceil(averageTime / graphData.length)
+        // }
+        graphData = graphData.filter((datum,index) => index<7)
+        graphData.map(item => {averageTime += item.totalDuration; return item})
+        averageTime = Math.ceil(averageTime / graphData.length)
         return (this.state.isActivityLoading) 
                 ? (
                     <Dimmer active>
@@ -34,6 +51,18 @@ class UserActivity extends Component {
                         </Message>
                     )
                     : (
+                        <div>
+                        <Segment>
+                            <h3>Time on NewsApp</h3>
+                            <div style={{ textAlign: 'center' }}>
+                                <p className="averageTime">{averageTime}m</p>
+                                <p style={{fontWeight: "bold"}}>Daily Average</p>
+                                <p>Average time you spent per day using the news app in the last week</p>
+                            </div>
+                            <div style={{ marginLeft:'25%', padding: '2%' }}>
+                            <UsageActivityChart width={null} height={null} />
+                            </div>
+                        </Segment>
                         <Feed>
                         {logsData.map((item) => (
                                 <Feed.Event key={item._id}>
@@ -70,6 +99,7 @@ class UserActivity extends Component {
                                 </Feed.Event>
                         ))}
                         </Feed>
+                        </div>
                     )
                 }
                 </div>
@@ -79,6 +109,7 @@ class UserActivity extends Component {
 const mapStateToProps = state => {
     return {
         logsData: state.logs.userActivityLogs,
+        graphData: state.logs.graph,
         profileImage: state.user.userData.userProfilePicture
     };
 };

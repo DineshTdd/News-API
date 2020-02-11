@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import { Form, Card, Button, Icon } from 'semantic-ui-react';
-import { divStyle , cardStyle } from '../constants/Styles.js';
+import './Styles/CardStyles.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as authAction from '../store/action/authAction';
@@ -16,8 +16,8 @@ class Signup extends Component {
         this.change = this.change.bind(this);
     }
 
-    async change(e) {
-        await this.setState({
+    change(e) {
+        this.setState({
             [e.target.name]: e.target.value
         });
     }
@@ -29,7 +29,7 @@ class Signup extends Component {
             alert('Please fill in the required fields and proceed!')
         } else {
             const userDetails = this.state;
-            await this.setState({name: '',
+            this.setState({name: '',
             email: '',
             password: ''})
             await this.props.userSignup(userDetails);  
@@ -39,9 +39,9 @@ class Signup extends Component {
     render() {
         
         return (
-            <div  style={divStyle}>
+            <div  className='divStyle'>
 
-            <Card style={cardStyle}>
+            <Card className='cardStyle'>
                 <Card.Content>
                     <Card.Header>Signup for News App</Card.Header>
                 </Card.Content>
@@ -78,7 +78,7 @@ class Signup extends Component {
                         onChange={(e) => this.change(e)}
                         />
                         <Button type="submit" style={{float: 'right'}}><Icon name="user outline"/>Signup</Button>
-                        <Link style={{padding: '10px',float: 'left'}} to="/" >If existing user</Link>
+                        <Link style={{marginTop: '10px',float: 'left'}} to="/" >If existing user</Link>
                     </Form>
                     
                     </Card.Description>

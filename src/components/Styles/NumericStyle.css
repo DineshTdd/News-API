@@ -1,0 +1,8 @@
+.averageTime {
+    padding: 0;
+    margin: 0;
+    font-size: 52px;
+    background: linear-gradient(to bottom right, steelblue, limegreen);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
