@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as logsAction from '../store/action/logsAction';
 // import UsageActivityChart from '../components/UsageActivityChart';
-import Chart from './Chart/Chart';
+import Chart from './Chart/Barchart/Chart';
+import Pie from './Chart/Piechart/Pie';
+import { timeParse } from 'd3-time-format';
 import './Styles/NumericStyle.css'
 import {Message, Feed, Dimmer, Loader, Icon, Segment } from 'semantic-ui-react';
 
@@ -25,18 +27,13 @@ class UserActivity extends Component {
         const {logsData} = this.props;
         let { graphData } = this.props;
         let averageTime = 0;
-        // if (graphData.length > 0 && graphData.length > 7) {
-        //     for (let i=0; i< 7; i++) {
-        //         averageTime += graphData[i].totalDuration;
-        //     }
-        //     averageTime = Math.ceil(averageTime / 7);
-        // } else if(graphData.length > 0 && graphData.length <= 7 ) {
-        //     graphData.map(item => {averageTime += item.totalDuration; return item})
-        //     averageTime = Math.ceil(averageTime / graphData.length)
-        // }
         graphData = graphData.filter((datum,index) => index<7)
         graphData.map(item => {averageTime += item.totalDuration; return item})
         averageTime = Math.ceil(averageTime / graphData.length)
+        let barData = [];
+        const parseDate = timeParse("%Y-%m-%d");
+        graphData.map((datum) => barData.push({x: parseDate(datum.date), y: datum.totalDuration}))
+        barData.sort((a, b) => new Date(a.x) - new Date(b.x))
         return (this.state.isActivityLoading) 
                 ? (
                     <Dimmer active>
@@ -64,6 +61,14 @@ class UserActivity extends Component {
                             <div >
                             {/* <UsageActivityChart width={null} height={null} /> */}
                             <Chart />
+                            <div style={{marginLeft: '30%'}}>
+                            <Pie
+                                data={barData}
+                                width={200}
+                                height={200}
+                                innerRadius={60}
+                                outerRadius={100}
+                            /> </div>
                             </div>
                         </Segment>
                         <Feed>
