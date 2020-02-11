@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as logsAction from '../store/action/logsAction';
-import UsageActivityChart from '../components/UsageActivityChart';
+// import UsageActivityChart from '../components/UsageActivityChart';
+import Chart from './Chart/Chart';
 import './Styles/NumericStyle.css'
 import {Message, Feed, Dimmer, Loader, Icon, Segment } from 'semantic-ui-react';
 
@@ -39,7 +40,8 @@ class UserActivity extends Component {
         return (this.state.isActivityLoading) 
                 ? (
                     <Dimmer active>
-                    <Loader size='small' />
+                    <Loader size='small' /><br></br>
+                    <h5>Loading activity...</h5>
                     </Dimmer>
                 )
                 : (<div>
@@ -59,8 +61,9 @@ class UserActivity extends Component {
                                 <p style={{fontWeight: "bold"}}>Daily Average</p>
                                 <p>Average time you spent per day using the news app in the last week</p>
                             </div>
-                            <div style={{ marginLeft:'25%', padding: '2%' }}>
-                            <UsageActivityChart width={null} height={null} />
+                            <div >
+                            {/* <UsageActivityChart width={null} height={null} /> */}
+                            <Chart />
                             </div>
                         </Segment>
                         <Feed>
