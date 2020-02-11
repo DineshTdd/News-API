@@ -133,14 +133,14 @@ class News extends Component {
                     : (
                     <Card.Group doubling centered stackable>
                         {news_data.map((item)=> (
-                          <SpringCard>
+                          <SpringCard key={ item.key }>
                           <Card style={{ width: '100%' }}
                               onTouchStart={() => this.handleButtonPress(item.url, item.title)} 
                               onTouchEnd={this.handleButtonRelease} 
                               onMouseDown={() => this.handleButtonPress(item.url, item.title)} 
                               onMouseUp={this.handleButtonRelease} 
                               onMouseLeave={this.handleButtonRelease}
-                              href={ item.url } target="_blank" key={ item.key }centered raised>
+                              href={ item.url } target="_blank" centered raised>
                                 <Image bordered src={ (item.urlToImage) ? item.urlToImage : 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fi.ytimg.com%2Fvi%2FvzchjdTNWa0%2Fmaxresdefault.jpg&f=1&nofb=1' }  />
                                 <Card.Content>
                                     <Card.Header>{ item.title }</Card.Header>
@@ -165,7 +165,18 @@ class News extends Component {
                     </Card.Group>
                     ) }
                 </Container>
-            </div>
+                {(this.props.isNewsFetching) ? 
+                     (
+                    <div style={{ paddingLeft: '5%', paddingRight: '5%'}}>
+                        <Message icon color='black' >
+                        <Icon name='circle notched' loading />
+                        <Message.Content>
+                          <Message.Header>Just a moment!</Message.Header>
+                          We are fetching that content for you.
+                        </Message.Content>
+                      </Message>
+                    </div>) : (null) }
+            </div>   
             <div style={{display:'flex',justifyContent:'center',alignItems:'center', paddingTop: '20px',paddingBottom: '20px'}}>
                 <Pagination
                 inverted

@@ -47,7 +47,7 @@ export const fetchUserActivityLogs = () => {
             } else{
                 await dispatch({
                     type: SET_USER_ACTIVITY_LOGS,
-                    payload: {value: response.data.result}
+                    payload: {value: response.data.result, graph: response.data.values}
                 });
             }
         } catch (err) {

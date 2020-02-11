@@ -2,6 +2,7 @@ import * as logsAction from '../action/logsAction';
 
 const initialState = {
     userActivityLogs: [],
+    graph: [],
     currentCollectionLogs: [],
     userCollectionLogs: [],
     totalCollectionLogs: 0,
@@ -18,7 +19,8 @@ export default(state= initialState, action) => {
         case logsAction.SET_USER_ACTIVITY_LOGS:
             return {
                 ...state,
-                userActivityLogs: action.payload.value
+                userActivityLogs: action.payload.value,
+                graph: action.payload.graph
             };
         case logsAction.SET_CURRENT_COLLECTION_ACTIVITY_LOGS:
             return {

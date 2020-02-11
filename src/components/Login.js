@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import { Form, Card, Button, Dimmer, Loader, Icon } from 'semantic-ui-react';
-import { divStyle , cardStyle } from '../constants/Styles.js';
+import './Styles/CardStyles.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as authAction from '../store/action/authAction';
@@ -61,9 +61,9 @@ class Login extends Component {
                     </Dimmer>
                 )
             
-                :  (<div  style={divStyle}>
+                :  (<div  className='divStyle'>
                 
-                    <Card style={cardStyle}>
+                    <Card className='cardStyle'>
                         <Card.Content>
                             <Card.Header>Login into News App</Card.Header>
                         </Card.Content>
@@ -91,7 +91,7 @@ class Login extends Component {
                                 onChange={async (event) => {await this.change(event)}}
                                 />
                                 <Button type="submit" style={{float: 'right'}}><Icon name="sign-in" />Login</Button>
-                                <Link style={{padding: '10px',float: 'left'}} to="/Signup" >Click to Signup</Link>
+                                <Link style={{marginTop: '10px',float: 'left'}} to="/Signup" >Click to Signup</Link>
                             </Form>
                             
                             </Card.Description>

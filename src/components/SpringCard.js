@@ -6,7 +6,7 @@ const calc = (x, y) => [-(y - window.innerHeight / 2) / 20, (x - window.innerWid
 const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`
 
 function SpringCard(props) {
-  const [propss, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 10, tension: 450, friction: 25 } }))
+  const [propss, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 10, tension: 650, friction: 55 } }))
   return (
     <animated.div
       className="card"
