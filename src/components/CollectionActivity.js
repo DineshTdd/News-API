@@ -28,7 +28,8 @@ class CollectionActivity extends Component {
         return (this.state.isActivityLoading) 
                 ? (
                     <Dimmer active>
-                    <Loader size='small' />
+                    <Loader size='small' /><br></br>
+                    <h5>Loading activity...</h5>
                     </Dimmer>
                 )
                 : (<div>
