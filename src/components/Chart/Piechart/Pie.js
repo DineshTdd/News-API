@@ -1,5 +1,8 @@
 import React from "react";
-import * as d3 from "d3";
+import { scaleOrdinal } from 'd3-scale';
+import { format } from 'd3-format';
+import { pie, arc } from 'd3-shape';
+import { schemeCategory10 } from 'd3-scale-chromatic';
 
 const Arc = ({ data, index, createArc, colors, format, total }) => (
   <g key={index} className="arc">
@@ -17,16 +20,14 @@ const Arc = ({ data, index, createArc, colors, format, total }) => (
 );
 
 const Pie = props => {
-  const createPie = d3
-    .pie()
+  const createPie = pie()
     .value(d => +d.y)
     .sort(null);
-  const createArc = d3
-    .arc()
+  const createArc = arc()
     .innerRadius(props.innerRadius)
     .outerRadius(props.outerRadius);
-  const colors = d3.scaleOrdinal(d3.schemeCategory10);
-  const format = d3.format(".2f");
+  const colors = scaleOrdinal(schemeCategory10);
+  const formatValue = format(".2f");
   const data = createPie(props.data);
   const totalValue = data => data.reduce((a,b) => parseInt(a) + parseInt(b.y), 0)
   const total = totalValue(props.data)
@@ -41,7 +42,7 @@ const Pie = props => {
             index={i}
             createArc={createArc}
             colors={colors}
-            format={format}
+            format={formatValue}
             total={total}
           />
         ))}
