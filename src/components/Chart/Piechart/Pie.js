@@ -2,7 +2,7 @@ import React from "react";
 import { scaleOrdinal } from 'd3-scale';
 import { format } from 'd3-format';
 import { pie, arc } from 'd3-shape';
-import { schemeCategory10 } from 'd3-scale-chromatic';
+import { schemeTableau10 } from 'd3-scale-chromatic';
 
 const Arc = ({ data, index, createArc, colors, format, total }) => (
   <g key={index} className="arc">
@@ -25,8 +25,10 @@ const Pie = props => {
     .sort(null);
   const createArc = arc()
     .innerRadius(props.innerRadius)
-    .outerRadius(props.outerRadius);
-  const colors = scaleOrdinal(schemeCategory10);
+    .outerRadius(props.outerRadius)
+    .cornerRadius(3)
+    .padAngle(0.02);
+  const colors = scaleOrdinal(schemeTableau10);
   const formatValue = format(".2f");
   const data = createPie(props.data);
   const totalValue = data => data.reduce((a,b) => parseInt(a) + parseInt(b.y), 0)
