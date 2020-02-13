@@ -27,7 +27,7 @@ const Pie = props => {
     .innerRadius(props.innerRadius)
     .outerRadius(props.outerRadius)
     .cornerRadius(3)
-    .padAngle(0.02);
+    .padAngle(0.01);
   const colors = scaleOrdinal(schemeTableau10);
   const formatValue = format(".2f");
   const data = createPie(props.data);

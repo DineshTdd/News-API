@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { scaleLinear } from 'd3-scale'
 import { interpolateLab } from 'd3-interpolate'
+import { connect } from 'react-redux'
+import * as logsAction from '../../../store/action/logsAction'
 
-export default class Bars extends Component {
+class Bars extends Component {
   constructor(props) {
     super(props)
 
@@ -26,6 +28,8 @@ export default class Bars extends Component {
           height={height - margins.bottom - scales.yScale(datum.y)}
           width={xScale.bandwidth()}
           fill={this.colorScale(datum.y)}
+          onMouseOver={() => this.props.setBarValue({value:datum.y, x: xScale(datum.x), y: yScale(datum.y)}) }
+          onMouseOut={() => this.props.setBarValue({value: null, x: null, y: null})}
         />,
       )
     )
@@ -35,3 +39,17 @@ export default class Bars extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+      barValue: state.logs.barValue,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+      setBarValue: (value) => dispatch({type: logsAction.SET_BAR_VALUE, payload: {value: value} }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Bars);

@@ -10,7 +10,12 @@ const initialState = {
     fetchedCollectionLogs: 0,
     nextStartRange: 0,
     nextEndRange: 0,
-    isFirstVisit: true
+    isFirstVisit: true,
+    barValue: {
+        value: null,
+        x: null, 
+        y: null
+    }
 };
 
 export default(state= initialState, action) => {
@@ -52,6 +57,15 @@ export default(state= initialState, action) => {
                 isFirstVisit: true
             };
             return initialState;
+        case logsAction.SET_BAR_VALUE:
+            return {
+                ...state,
+                barValue: {
+                    value: action.payload.value.value,
+                    x: action.payload.value.x,
+                    y: action.payload.value.y
+                }
+            }
         default:
             return state;
     }
