@@ -26,15 +26,17 @@ const UserActivity = (props) => {
     let {userActivityLogs: logsData, graph: graphData } = useSelector(state => state.logs);
     let profileImage = useSelector(state => state.user.userData.userProfilePicture)
     let averageTime = 0;
-    graphData = graphData.filter((datum,index) => index<7)
-    graphData.map(item => {averageTime += item.totalDuration; return item})
-    averageTime = Math.ceil(averageTime / graphData.length)
     let barData = [];
     const parseDate = timeParse("%Y-%m-%d");
-    graphData.map((datum) => barData.push({x: parseDate(datum.date), y: datum.totalDuration}))
-    barData.sort((a, b) => new Date(a.x) - new Date(b.x))
-
+    if(graphData) {
+        graphData = graphData.filter((datum,index) => index<7)
+        graphData.map(item => {averageTime += item.totalDuration; return item})
+        averageTime = Math.ceil(averageTime / graphData.length)
+        graphData.map((datum) => barData.push({x: parseDate(datum.date), y: datum.totalDuration}))
+        barData.sort((a, b) => new Date(a.x) - new Date(b.x))
+    }
     
+
     return (isActivityLoading)
             ? (
                 <Dimmer active>

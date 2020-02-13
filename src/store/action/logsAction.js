@@ -3,6 +3,7 @@ export const SET_USER_ACTIVITY_LOGS = 'SET_USER_ACTIVITY_LOGS';
 export const SET_COLLECTION_ACTIVITY_LOGS= 'SET_COLLECTION_ACTIVITY_LOGS';
 export const SET_CURRENT_COLLECTION_ACTIVITY_LOGS = 'SET_CURRENT_COLLECTION_ACTIVITY_LOGS';
 export const RESET_LOGS_STATE = 'RESET_LOGS_STATE';
+export const SET_BAR_VALUE = 'SET_BAR_VALUE';
 
 export const fetchCollectionActivityLogs = () => {
     return async (dispatch, getState) => {
