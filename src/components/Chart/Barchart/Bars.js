@@ -18,17 +18,17 @@ class Bars extends Component {
     const { scales, margins, barData, svgDimensions } = this.props
     const { xScale, yScale } = scales
     const { height } = svgDimensions
-
+    const barHeight = height - margins.bottom 
     const bars = (
       barData.map(datum =>
         <rect
           key={datum.x}
           x={xScale(datum.x)}
           y={yScale(datum.y)}
-          height={height - margins.bottom - scales.yScale(datum.y)}
+          height={barHeight - scales.yScale(datum.y)}
           width={xScale.bandwidth()}
           fill={this.colorScale(datum.y)}
-          onMouseOver={() => this.props.setBarValue({value:datum.y, x: xScale(datum.x), y: yScale(datum.y)}) }
+          onMouseOver={() => this.props.setBarValue({value:datum.y, x: xScale(datum.x), y: yScale(datum.y), barHeight: barHeight - scales.yScale(datum.y)}) }
           onMouseOut={() => this.props.setBarValue({value: null, x: null, y: null})}
         />,
       )

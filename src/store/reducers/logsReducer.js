@@ -14,7 +14,8 @@ const initialState = {
     barValue: {
         value: null,
         x: null, 
-        y: null
+        y: null,
+        barHeight: null
     }
 };
 
@@ -63,7 +64,8 @@ export default(state= initialState, action) => {
                 barValue: {
                     value: action.payload.value.value,
                     x: action.payload.value.x,
-                    y: action.payload.value.y
+                    y: action.payload.value.y,
+                    barHeight: action.payload.value.barHeight
                 }
             }
         default:

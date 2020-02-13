@@ -11,7 +11,7 @@ const Chart = (props) => {
 
   const parseDate = timeParse("%Y-%m-%d");
   let graphData = useSelector(state => state.logs.graph);
-  let barValue = useSelector(state => state.logs.barValue)
+  let barValue = useSelector(state => state.logs.barValue) || {value: null, x: null, y: null, barHeight: null}
   let barData = [];
   graphData = graphData.filter((datum, index) => index<7)
   graphData.map((datum) => barData.push({x: parseDate(datum.date), y: datum.totalDuration}))
@@ -32,17 +32,18 @@ const Chart = (props) => {
     .domain(barData.map(d => d.x))
     .range([margins.left, svgDimensions.width - margins.right])
 
+  const yScaleRange = svgDimensions.height - margins.bottom
     // scaleLinear type
   const yScale = scaleLinear()
       // scaleLinear domain required at least two values, min and max       
     .domain([0, maxValue])
-    .range([svgDimensions.height - margins.bottom, margins.top])
+    .range([yScaleRange, margins.top])
 
 
     return (
       <div id='graph'>
         {
-          (barValue.x !== null) ? (<div className="d3-tip" style={{ position: "relative", left: `${barValue.x}px`, top: `${barValue.y}px` }}><p>{barValue.value}</p></div>) : null
+          (barValue.x !== null) ? (<div className="d3-tip" style={{ position: "absolute", left: `${barValue.x + (Math.floor(xScale.bandwidth()/2))}px`, top: `${margins.top + (svgDimensions.height - barValue.barHeight)}px` }}><p>{barValue.value} minutes</p></div>) : null
         }
       <svg width={svgDimensions.width} height={svgDimensions.height}>
          <Axes 
