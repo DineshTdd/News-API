@@ -27,7 +27,6 @@ class App extends Component {
       "load",
       "mousemove",
       "mousedown",
-      "click",
       "scroll",
       "keypress"
     ];
@@ -36,15 +35,16 @@ class App extends Component {
     this.autoLogout = this.autoLogout.bind(this);
     this.resetTimeout = this.resetTimeout.bind(this);
 
+    
+  }
+
+  componentDidMount() {
+    this.destroy()
     for (let i in this.events) {
       window.addEventListener(this.events[i], this.resetTimeout);
     }
 
     this.setTimeout();
-  }
-
-  componentDidMount() {
-    this.props.changeData();
   }
 
   logout(e) {
@@ -74,8 +74,8 @@ warn = () => {
   for (var i in this.events) {
     window.removeEventListener(this.events[i], this.resetTimeout);
   }
-  alert("You will be logged out automatically in 1 minute.");
   this.logoutTimeout = setTimeout(this.autoLogout, 59 * 1000);
+  alert("You will be logged out in a minute.");
 }
 
 autoLogout = () => {
@@ -83,10 +83,10 @@ autoLogout = () => {
   let resp = window.confirm("Are you leaving?");
   if(resp === true) {
     this.setState({ logginStatus: false });
-    console.log('logged out')
+    this.destroy()
     this.logout();
   } else if (resp === false) {
-    console.log('Logged in')
+    this.destroy()
     for (let i in this.events) {
       window.addEventListener(this.events[i], this.resetTimeout);
     }

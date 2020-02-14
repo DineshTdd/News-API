@@ -4,7 +4,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { redisCollectionActivityToMongo } = require('./logs');
+const {client: redisClient } = require('../config/redisconfig');
 
+  
 
 exports.registerNewUser = async ( user, res ) => {
     try {
@@ -63,6 +65,9 @@ exports.loginUser = async ( user, res ) => {
            await User.findOneAndUpdate({email: email}, {lastLogin: date}, {
                 new: true // document returned after update
             })
+            redisClient.SET(user._id, token, (err, reply) => {
+                console.log(reply)
+            })
             res.header('auth-token', token).json({
                 _id: user._id,
                 token: token,
@@ -101,11 +106,14 @@ exports.logoutUser = async (logoutTime, userId, res) => {
                 activeMinutes: activeMinutes
             }
         });
+
+        await redisClient.DEL(userId, (err, reply) => {console.log(reply); if(err) console.log(err)})
         await redisCollectionActivityToMongo(userId);
-        return newLog.save().then(createdPost => 
-            res.status(201).json({
-                message: `Log ${createdPost} added successfully`,
-        }));
+        await newLog.save().then(createdPost => console.log(`log created ${createdPost._id}`));
+        return res.status(200).json({
+            message: `Log added successfully`,
+            logout: true
+        })
     } catch(err) {
         return res.status(500).send(err);
     }

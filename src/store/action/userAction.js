@@ -1,5 +1,18 @@
+import { push } from 'connected-react-router';
+import { REMOVE_USER_SESSION } from './authAction'
 const axios = require('axios')
 export const SET_USER_DATA = 'SET_USER_DATA';
+
+const checkIsLogout = (response) => {
+    return async (dispatch, getState) => {
+        if(response.data.logout) {
+            dispatch({type: REMOVE_USER_SESSION})
+            dispatch(push('/'))
+        } else {
+            return;
+        }
+    }
+}
 
 export const fetchUserDetails = () => {
     return async(dispatch, getState) => {
@@ -12,6 +25,7 @@ export const fetchUserDetails = () => {
                   'userid': _id.toString()
                 }
             })
+            checkIsLogout(response)
             await dispatch({
                 type: SET_USER_DATA,
                 payload: {value: response}
@@ -29,13 +43,14 @@ export const setProfilePicture = (file) => {
             const formData = new FormData();
             formData.append('file', file);
 
-            await axios.post('http://localhost:5000/api/userdetails/setProfilePicture', formData ,{
+            const response = await axios.post('http://localhost:5000/api/userdetails/setProfilePicture', formData ,{
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'auth-token': token,
                 'userid': _id.toString()
             }
             });
+            checkIsLogout(response)
             
             await dispatch(fetchUserDetails())
         } catch(err) {
