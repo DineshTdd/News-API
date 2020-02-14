@@ -85,9 +85,9 @@ exports.logoutUser = async (logoutTime, userId, res) => {
         const _id = mongoose.Types.ObjectId();
         const date = new Date(logoutTime)
         let lastLogin;
-        await User.findById(userId).then(async user => {
+        await User.findById(userId).then(user => {
             if(user) {
-                lastLogin = await new Date(user.lastLogin);
+                lastLogin = new Date(user.lastLogin);
             }
         }).catch(err => res.status(400).send(err))
         const activeMinutes = Math.ceil(Math.abs(date - lastLogin) / (1000 * 60 )); // for days 1000 * 60 * 60 * 24

@@ -28,7 +28,10 @@ class Bars extends Component {
           height={barHeight - scales.yScale(datum.y)}
           width={xScale.bandwidth()}
           fill={this.colorScale(datum.y)}
-          onMouseOver={() => this.props.setBarValue({value:datum.y, x: xScale(datum.x), y: yScale(datum.y), barHeight: barHeight - scales.yScale(datum.y)}) }
+          onMouseOver={() => {
+            // this.props.handleMouseOver("007", ev);
+            this.props.setBarValue({value:datum.y, x: xScale(datum.x), y: yScale(datum.y), barHeight: barHeight - scales.yScale(datum.y)}) 
+          }}
           onMouseOut={() => this.props.setBarValue({value: null, x: null, y: null})}
         />,
       )
