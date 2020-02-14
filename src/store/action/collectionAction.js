@@ -1,3 +1,5 @@
+import { push } from 'connected-react-router';
+import { REMOVE_USER_SESSION } from './authAction'
 const axios = require('axios')
 
 export const UPDATE_FORM_VALUES = 'UPDATE_FORM_VALUES';
@@ -10,6 +12,17 @@ export const CLEAR_FORM_VALUES = 'CLEAR_FORM_VALUES';
 export const CHANGE_STATUS = 'CHANGE_STATUS';
 export const CHANGE_ISCOLLECTIONFETCHING = 'CHANGE_ISCOLLECTIONFETCHING';
 export const CHANGE_ISFORMVALID = 'CHANGE_ISFORMVALID';
+
+const checkIsLogout = (response) => {
+    return async (dispatch, getState) => {
+        if(response.data.logout) {
+            dispatch({type: REMOVE_USER_SESSION})
+            dispatch(push('/'))
+        } else {
+            return;
+        }
+    }
+}
 //Fetching news from postgres collection
 export const getNewsFromPG = () => {
     return async (dispatch, getState) => {
@@ -22,6 +35,7 @@ export const getNewsFromPG = () => {
                   'userid': localStorage.getItem('_id').toString()
                 }
             })
+            checkIsLogout(response)
             // Update store state with news items from PG
             await dispatch({
                 type: FETCH_COLLECTION_NEWS,
@@ -54,6 +68,7 @@ export const saveNewsToPG = (formValues, option) => {
                     }
                 })
                   .then(function (response) {
+                    checkIsLogout(response)
                     if(option !== 'news from api' ) {
                     dispatch({type: CHANGE_STATUS, payload: {statuscode: 200}})
                     }
@@ -90,6 +105,7 @@ export const deleteNewsFromPG = (articleurl) => {
                 },
              data: { id: articleurl } })
             .then(function (response) {
+                checkIsLogout(response)
                 console.log(response);
               })
               .catch(function (error) {
@@ -116,6 +132,7 @@ export const updateNewsToPG = () => {
                 'userid': localStorage.getItem('_id').toString()
               }})
             .then(function (response) {
+                checkIsLogout(response)
                 dispatch(getNewsFromPG)
                 dispatch({type: CHANGE_STATUS, payload: {statuscode: 200}})
               })

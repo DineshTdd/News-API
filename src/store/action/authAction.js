@@ -34,7 +34,7 @@ export const userLogin = (userDetails) => {
             await axios.post('http://localhost:5000/api/user/login', userDetails)
                   .then(async function (response) {
                     const { _id, token } = response.data;
-                    await dispatch(setUser(_id, token));
+                    dispatch(setUser(_id, token));
                   })
                   .catch( function (error) {
                     console.log(error);
@@ -53,11 +53,11 @@ export const userLogin = (userDetails) => {
 export const setUser = (_id, token) => {
   return async (dispatch, getState) => {
     try {
-      await dispatch({
+      dispatch({
         type: SET_USER_SESSION,
         payload: {value: _id, token}
       });
-      await dispatch(push('/Home'))
+      dispatch(push('/Home'))
     } catch(err) {
       alert('Please try login again!')
     }
@@ -80,13 +80,13 @@ export const removeUserSession = () => {
       .catch( function (error) {
         console.log(error);
       });
-      await dispatch({
+      dispatch({
         type: REMOVE_USER_SESSION
       });
-      await dispatch({
+      dispatch({
         type: logsAction.RESET_LOGS_STATE
       })
-      await dispatch(push('/'))
+      dispatch(push('/'))
     } catch(err) {
       console.error(err);
     }

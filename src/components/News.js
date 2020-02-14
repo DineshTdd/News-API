@@ -29,7 +29,6 @@ class News extends Component {
     }
   }
   
-    
       // initial fetching of news from NEWSAPI and state is initialized
       componentDidMount() {
         this.props.changeData();
@@ -211,7 +210,8 @@ const mapStateToProps = state => {
       changeActivePage: (value) => dispatch({type: newsActions.CHANGE_ACTIVE_PAGE, payload: {value}}),
       changeData: () => dispatch(newsActions.fetchNews()),
       addToCollection: (news_item) => dispatch(collectionActions.saveNewsToPG(news_item)),
-      toggleIsFirstVisit: (value) => dispatch({type: newsActions.TOGGLE_ISFIRSTVISIT, payload: {value} })
+      toggleIsFirstVisit: (value) => dispatch({type: newsActions.TOGGLE_ISFIRSTVISIT, payload: {value} }),
+      redirect: () => dispatch(newsActions.redirect())
     };
   };
 

@@ -1,9 +1,22 @@
+import { push } from 'connected-react-router';
+import { REMOVE_USER_SESSION } from './authAction'
 const axios = require('axios');
 export const SET_USER_ACTIVITY_LOGS = 'SET_USER_ACTIVITY_LOGS';
 export const SET_COLLECTION_ACTIVITY_LOGS= 'SET_COLLECTION_ACTIVITY_LOGS';
 export const SET_CURRENT_COLLECTION_ACTIVITY_LOGS = 'SET_CURRENT_COLLECTION_ACTIVITY_LOGS';
 export const RESET_LOGS_STATE = 'RESET_LOGS_STATE';
 export const SET_BAR_VALUE = 'SET_BAR_VALUE';
+
+const checkIsLogout = (response) => {
+    return async (dispatch, getState) => {
+        if(response.data.logout) {
+            dispatch({type: REMOVE_USER_SESSION})
+            dispatch(push('/'))
+        } else {
+            return;
+        }
+    }
+}
 
 export const fetchCollectionActivityLogs = () => {
     return async (dispatch, getState) => {
@@ -17,6 +30,7 @@ export const fetchCollectionActivityLogs = () => {
                   'userid': _id.toString()
                 }
             });
+            checkIsLogout(response)
             if (response.data) {
                 await dispatch({
                     type: SET_COLLECTION_ACTIVITY_LOGS,
@@ -40,6 +54,7 @@ export const fetchUserActivityLogs = () => {
                   'userid': _id.toString()
                 }
             })
+            checkIsLogout(response)
             if (response.data.message) {
                 await dispatch({
                     type: SET_USER_ACTIVITY_LOGS,
@@ -68,6 +83,7 @@ export const fetchCurrentCollectionLogs = () => {
                   'userid': _id.toString()
                 }
             })
+            checkIsLogout(response)
             if (response.data.message) {
                 await dispatch({
                     type: SET_CURRENT_COLLECTION_ACTIVITY_LOGS,
