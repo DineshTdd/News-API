@@ -39,6 +39,10 @@ const Chart = (props) => {
     .domain([0, maxValue])
     .range([yScaleRange, margins.top])
 
+    // function handleMouseOver(barId, ev) {
+    // Do something
+    // Set the state
+    // }
 
     return (
       <div id='graph'>
@@ -57,21 +61,11 @@ const Chart = (props) => {
           barData={barData}
           maxValue={maxValue}
           svgDimensions={svgDimensions}
+          // onMouseOver={handleMouseOver}
         />
       </svg>
       </div>
     )
   }
-
-// const mapStateToProps = state => {
-//     return {
-//         graphData: state.logs.graph,
-//     };
-// };
-
-
-// export default ResponsiveWrapperHook(
-  // connect(mapStateToProps,null)
-  // (Chart));
 
   export default Chart;

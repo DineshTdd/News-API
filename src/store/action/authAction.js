@@ -11,12 +11,12 @@ export const userSignup = (userDetails) => {
     return async (dispatch, getState) => {
         try {
             await axios.post('http://localhost:5000/api/user/register', userDetails)
-                  .then(async function (response) {
-                    await alert('Sign up successful!')
+                  .then(function (response) {
+                    alert('Sign up successful!')
                     dispatch(push('/'))
                   })
-                  .catch(async function (error) {
-                    await alert(`${error.response.data.message} try again`);
+                  .catch(function (error) {
+                    alert(`${error.response.data.message} try again`);
                     // browserHistory.push('/Signup')
                     dispatch(push('/Signup'))
                   });

@@ -1,5 +1,6 @@
 const axios = require('axios')
 const {fetchUserDetails} = require('./userAction');
+const { removeUserSession } = require('./authAction')
 
 export const CHANGE_COUNTRY = 'CHANGE_COUNTRY';
 export const CHANGE_CATEGORY = 'CHANGE_CATEGORY';
@@ -27,6 +28,9 @@ export const fetchNews = () => {
                   'auth-token': token
                 }
             });
+            if (response.status === 400) {
+                dispatch(removeUserSession())
+            }
             await dispatch({
                 type: CHANGE_DATA,
                 payload: {value: response}

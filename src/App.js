@@ -14,11 +14,33 @@ import * as authAction from './store/action/authAction';
 
 
 class App extends Component {
-  state = {
-    isCollection: false,
-    isProfile: false,
-    isTodo: false,
-    activeItem: 'header'
+  constructor(props) {
+    super(props);
+
+    this.state = { 
+      isCollection: false,
+      isProfile: false,
+      isTodo: false,
+      activeItem: 'header'
+    };
+    this.events = [
+      "load",
+      "mousemove",
+      "mousedown",
+      "click",
+      "scroll",
+      "keypress"
+    ];
+
+    this.warn = this.warn.bind(this);
+    this.autoLogout = this.autoLogout.bind(this);
+    this.resetTimeout = this.resetTimeout.bind(this);
+
+    for (let i in this.events) {
+      window.addEventListener(this.events[i], this.resetTimeout);
+    }
+
+    this.setTimeout();
   }
 
   componentDidMount() {
@@ -26,10 +48,60 @@ class App extends Component {
   }
 
   logout(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     this.props.removeUserSession();
   }
-  
+
+
+clearTimeout = () => {
+  if (this.warnTimeout) clearTimeout(this.warnTimeout);
+
+  if (this.logoutTimeout) clearTimeout(this.logoutTimeout);
+}
+
+setTimeout = () => {
+  this.warnTimeout = setTimeout(this.warn, 120 * 1000);
+}
+
+resetTimeout = () => {
+  this.clearTimeout();
+  this.setTimeout();
+}
+
+warn = () => {
+  for (var i in this.events) {
+    window.removeEventListener(this.events[i], this.resetTimeout);
+  }
+  alert("You will be logged out automatically in 1 minute.");
+  this.logoutTimeout = setTimeout(this.autoLogout, 59 * 1000);
+}
+
+autoLogout = () => {
+  // Send a logout request to the API
+  let resp = window.confirm("Are you leaving?");
+  if(resp === true) {
+    this.setState({ logginStatus: false });
+    console.log('logged out')
+    this.logout();
+  } else if (resp === false) {
+    console.log('Logged in')
+    for (let i in this.events) {
+      window.addEventListener(this.events[i], this.resetTimeout);
+    }
+    this.setTimeout();
+  }
+}
+
+destroy = () => {
+  this.clearTimeout();
+
+  for (var i in this.events) {
+    window.removeEventListener(this.events[i], this.resetTimeout);
+  }
+}
+
 
   // Renders News and Collection component with common Menu
   render() {
