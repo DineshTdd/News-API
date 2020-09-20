@@ -24,6 +24,7 @@
     "formidable": "^1.2.1",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.2",
     "mongoose": "^5.8.9",
     "morgan": "^1.9.1",
     "msgpack-lite": "^0.1.26",
