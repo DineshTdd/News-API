@@ -14,7 +14,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "app-root-path": "^3.0.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.7.2",
     "cors": "^2.8.5",
